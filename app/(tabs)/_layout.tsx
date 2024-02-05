@@ -28,50 +28,13 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          header: () => <CustomHeader />,
-          title: "Home",
+          headerShown: false,
           tabBarIcon: ({ color }) => (
             <TabBarIcon name={"ios-home-sharp"} color={color} />
           ),
         }}
       />
-      <Tabs.Screen
-        name="two"
-        options={{
-          title: "Cart",
-          tabBarBadge: products.length > 0 ? products.length : null,
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{ paddingLeft: 10 }}>
-              <Icon name="chevron-back" size={28} color={Colors.primary} />
-            </TouchableOpacity>
-          ),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-cart" color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
-        name="three"
-        options={{
-          title: "Favorites",
-          headerLeft: () => (
-            <TouchableOpacity
-              onPress={() => {
-                navigation.goBack();
-              }}
-              style={{ paddingLeft: 10 }}>
-              <Icon name="chevron-back" size={28} color={Colors.primary} />
-            </TouchableOpacity>
-          ),
-          tabBarIcon: ({ color }) => (
-            <TabBarIcon name="ios-heart-sharp" color={color} />
-          ),
-        }}
-      />
+
       <Tabs.Screen
         name="four"
         options={{

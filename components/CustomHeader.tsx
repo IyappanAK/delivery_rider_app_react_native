@@ -84,7 +84,7 @@ const CustomHeader = () => {
                 <Text style={styles.title}>Delivery · Now</Text>
                 <View style={styles.locationName}>
                   <Text style={styles.subtitle}>
-                    {user?.data?.Address?.[0]?.area || "Select"}{" "}
+                    {user?.data?.Address?.[0]?.area || "Select"}
                   </Text>
                   <Ionicons
                     name="chevron-down"
@@ -102,29 +102,25 @@ const CustomHeader = () => {
           </TouchableOpacity>
         </Link>
       </View>
-      <SearchBar />
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   safeArea: {
-    flex: 1,
-    backgroundColor: "#fff",
   },
   container: {
     height: 60,
-    backgroundColor: "#fff",
+    backgroundColor: Colors.lightGrey,
     flexDirection: "row",
     gap: 20,
     alignItems: "center",
     justifyContent: "space-between",
     paddingHorizontal: 20,
-    marginTop: 40,
   },
   secondContainer: {
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: Colors.lightGrey,
     flex: 1,
     alignItems: "center",
   },

@@ -1,10 +1,10 @@
 import { QueryClientConfig } from '@tanstack/react-query'
-import {BASE_URL,RAZOR_PAY_ID,EXPO_PUBLIC_GOOGLE_API_KEY,AUTH_BASE_URL} from "@env"
+import { BASE_URL, RAZOR_PAY_ID, EXPO_PUBLIC_GOOGLE_API_KEY, AUTH_BASE_URL } from "@env"
 
 
 export const ENV = {
-  BASE_URL,AUTH_BASE_URL,
-  RAZOR_PAY_ID,EXPO_PUBLIC_GOOGLE_API_KEY
+  BASE_URL, AUTH_BASE_URL,
+  RAZOR_PAY_ID, EXPO_PUBLIC_GOOGLE_API_KEY
 }
 
 export const API_CONFIG = {
@@ -17,13 +17,13 @@ export const QUERY_CONFIG: QueryClientConfig = {
     queries: {
       ...(BASE_URL === 'local'
         ? {
-            refetchOnWindowFocus: false,
-            staleTime: 5 * 60 * 1000, // 5 Minute
-          }
+          refetchOnWindowFocus: false,
+          staleTime: 5 * 60 * 1000, // 5 Minute
+        }
         : {
-            refetchOnWindowFocus: true,
-            staleTime: 5 * 60 * 1000, // 5 Minute
-          }),
+          refetchOnWindowFocus: true,
+          staleTime: 5 * 60 * 1000, // 5 Minute
+        }),
 
       retry: (_, error: any) => {
         const statusCode = error?.response?.status
@@ -37,4 +37,3 @@ export const QUERY_CONFIG: QueryClientConfig = {
 
 export const MASTERS_STALE_TIME: number = 1 * 60 * 60 * 60 // 1 hour
 
-export const SENTRY_APP_NAME = 'Manufacture'

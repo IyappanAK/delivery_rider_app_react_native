@@ -13,9 +13,8 @@ import { useFonts } from "expo-font";
 import { SplashScreen, Stack, useNavigation } from "expo-router";
 
 import { useEffect } from "react";
-import { HeaderReview } from "./review";
-
 import * as SecureStore from "expo-secure-store";
+
 import LoginScreen from "./Login";
 
 import useBasketStore from "@/store/basketStore";
@@ -294,12 +293,7 @@ function RootLayoutNav() {
               ),
             }}
           />
-          <Stack.Screen
-            name="review"
-            options={{
-              header: () => <HeaderReview />,
-            }}
-          />
+
           <Stack.Screen
             name="trackOrder"
             options={{

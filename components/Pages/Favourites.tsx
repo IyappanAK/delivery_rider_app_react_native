@@ -98,7 +98,7 @@ const MenuCards = (props: any) => {
     <ScrollView
       showsVerticalScrollIndicator={true}
       contentContainerStyle={{
-        paddingVertical: 24,
+        paddingVertical: 16,
         alignItems: "center",
         backgroundColor: Colors.primaryBg,
       }}
@@ -139,8 +139,9 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: Colors.primaryBg,
+    backgroundColor: "red",
     paddingHorizontal: 24,
+
   },
   imageContainer: {
     backgroundColor: "white",
