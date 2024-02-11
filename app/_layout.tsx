@@ -51,7 +51,7 @@ export default function RootLayout() {
   const { token, setToken, products, setProducts, setTotal } = useBasketStore();
 
   //Disable this While Go For Production
-  LogBox.ignoreAllLogs();
+  // LogBox.ignoreAllLogs();
 
   let result;
   useEffect(() => {
@@ -152,7 +152,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="close-outline" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -167,7 +168,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="close-outline" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -189,7 +191,8 @@ function RootLayoutNav() {
                   }}
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="close-outline" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -203,7 +206,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -217,7 +221,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -231,7 +236,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -245,7 +251,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -259,7 +266,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -273,7 +281,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -287,7 +296,23 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
+                  <Icon name="chevron-back" size={28} color={Colors.primary} />
+                </TouchableOpacity>
+              ),
+            }}
+          />
+          <Stack.Screen
+            name="details"
+            options={{
+              headerTitle: "Details",
+              headerLeft: () => (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.goBack();
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -302,7 +327,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),
@@ -322,7 +348,8 @@ function RootLayoutNav() {
                 <TouchableOpacity
                   onPress={() => {
                     navigation.goBack();
-                  }}>
+                  }}
+                >
                   <Icon name="chevron-back" size={28} color={Colors.primary} />
                 </TouchableOpacity>
               ),

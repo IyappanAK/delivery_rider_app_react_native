@@ -73,6 +73,16 @@ export const getPincodes = (options: any) =>
     ...options,
   });
 
+export const getRiderOrders = (options: any, id: any) =>
+  useQuery({
+    queryKey: queries.home.riderOrder.queryKey,
+    queryFn: () => API.getRiderOrder(id),
+    ...options,
+  });
+
+export const updateOrder = (options: any) =>
+  useMutation({ mutationFn: API.upateOrder, ...options });
+
 export const updateFavMenus = (options: any) =>
   useMutation({ mutationFn: API.upateFav, ...options });
 

@@ -1,63 +1,57 @@
 import {
   View,
   Text,
-  StyleSheet,
   Image,
+  TextInput,
+  StyleSheet,
   TouchableOpacity,
   ToastAndroid,
+  Linking,
+  Alert,
 } from "react-native";
 
-import { useSharedValue, withTiming } from "react-native-reanimated";
-
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useState } from "react";
+import { AntDesign } from "@expo/vector-icons";
 
 import Colors from "@/constants/Colors";
-import { Ionicons } from "@expo/vector-icons";
-
-import { Link, useNavigation } from "expo-router";
 import useBasketStore from "@/store/basketStore";
 
-import { getAllMenus, getUserInfo, updateFavMenus } from "@/core/services/home";
-import { useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { useQueryClient } from "@tanstack/react-query";
+
+import { queries } from "@/core/constants/queryKeys";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import ParallaxScrollView from "@/components/ParallaxScrollView";
-import useCommonStore from "@/store/commonStore";
-import { useQueryClient } from "@tanstack/react-query";
-import { queries } from "@/core/constants/queryKeys";
+import { updateOrder } from "@/core/services/home";
 
 const Details = () => {
   const route = useRoute();
-  const opacity = useSharedValue(0);
-
-  const navigation = useNavigation();
-  const queryClient = useQueryClient();
-
-  const [isFav, setIsFav] = useState();
-  const { total, addProduct, products } = useBasketStore();
-
   const data = route?.params?.data;
-  const allMenus = getAllMenus({});
 
-  const user = getUserInfo({ enabled: false });
-  const { setUserInfo, userInfo } = useCommonStore();
+  const [error, setError] = useState<any>(false);
+  const [cash, setCash] = useState<any>("");
 
-  const FEES = {
-    service: 10,
-    delivery: 10,
-  };
+  const [cancel, setCancel] = useState<any>(false);
+  const [cancelReason, setCancelReason] = useState<any>("");
 
-  const updateMenu = updateFavMenus({
+  const [isContentVisible, setContentVisible] = useState(false);
+
+  const queryClient = useQueryClient();
+  const { addProduct } = useBasketStore();
+
+  const nav = useNavigation();
+
+  const updateOrders = updateOrder({
     onSuccess: () => {
-      user.refetch();
       queryClient.invalidateQueries({
-        queryKey: queries.home.userAddress.queryKey,
+        queryKey: queries.home.riderOrder.queryKey,
       });
       ToastAndroid.showWithGravity(
-        "Favourites updated",
+        "Successfully updated",
         ToastAndroid.SHORT,
         ToastAndroid.CENTER
       );
+      nav.goBack();
     },
     onError: () => {
       ToastAndroid.showWithGravity(
@@ -77,150 +71,262 @@ const Details = () => {
     );
   };
 
-  function changeFav() {
-    updateMenu.mutate(data);
-  }
+  const makePhoneCall = (number: any) => {
+    Linking.openURL(`tel:+91${number}`).catch((err) =>
+      console.error("Error in initiating the phone call: ", err)
+    );
+  };
 
-  useEffect(() => {
-    setUserInfo(user.data);
-  }, [user.data]);
-
-  useEffect(() => {
-    setIsFav(userInfo?.favoriteMenus?.some((obj: any) => obj.id === data.id));
-  }, [userInfo]);
-
-  useLayoutEffect(() => {
-    navigation.setOptions({
-      headerTransparent: true,
-      headerTitle: "",
-      headerTintColor: Colors.primary,
-      headerLeft: () => (
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={styles.roundButton}>
-          <Ionicons name="chevron-back" size={24} color={Colors.primary} />
-        </TouchableOpacity>
-      ),
-      headerRight: () => (
-        <View style={styles.bar}>
-          <TouchableOpacity style={styles.roundButton} onPress={changeFav}>
-            {isFav ? (
-              <Ionicons name="heart" size={24} color={Colors.primary} />
-            ) : (
-              <Ionicons name="heart-outline" size={25} color={Colors.primary} />
-            )}
-          </TouchableOpacity>
-        </View>
-      ),
-    });
-  }, [isFav]);
-
-  const onScroll = (event: any) => {
-    const y = event.nativeEvent.contentOffset.y;
-    if (y > 350) {
-      opacity.value = withTiming(1);
+  const handleCashCollection = (total: any) => {
+    const amount = parseFloat(cash);
+    if (amount === total) {
+      const payload = {
+        id: data?.id,
+        orderStatus: "delivered",
+        payment_status: "true",
+      };
+      completeOrder(payload, false);
     } else {
-      opacity.value = withTiming(0);
+      setCash(0);
+      setError("Enter Correct Amount");
     }
   };
 
+  const handleCancel = () => {
+    setError("");
+    if (cancelReason) {
+      const payload = {
+        id: data?.id,
+        reason: cancelReason,
+        orderStatus: "cancelled",
+      };
+      completeOrder(payload, true);
+    } else {
+      setError("Enter Valid Cancel Reason");
+    }
+  };
+
+  const completeOrder = (payload: any, cancel: boolean) => {
+    Alert.alert(
+      "Alert",
+      `Are you sure you want to ${cancel ? "cancel" : "complete"} Order`,
+      [
+        { text: "NO", style: "cancel" },
+        { text: "Yes", onPress: () => updateOrders.mutate(payload) },
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
-    <>
-      <ParallaxScrollView
-        scrollEvent={onScroll}
-        backgroundColor={Colors.primaryBg}
-        style={{ flex: 1 }}
-        parallaxHeaderHeight={250}
-        stickyHeaderHeight={100}
-        renderBackground={() => (
-          <Image
-            source={{ uri: data?.image }}
-            style={{ height: 300, width: "100%" }}
-          />
-        )}
-        contentBackgroundColor={Colors.lightGrey}
-        renderStickyHeader={() => (
-          <View key="sticky-header" style={styles.stickySection}>
-            <Text style={styles.stickySectionText}>{data?.name}</Text>
-          </View>
-        )}>
-        <View style={styles.detailsContainer}>
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-between",
-              alignItems: "center",
-            }}>
-            <Text style={styles.restaurantName}>{data?.name}</Text>
-            <Text style={styles.price}>₹{data?.price}</Text>
-          </View>
-
-          <Text style={styles.restaurantDescription}>{data?.description}</Text>
-          <TouchableOpacity
-            style={{ flex: 1, alignItems: "flex-end", marginHorizontal: 16 }}
-            onPress={() => addToCart(data)}>
-            <Text style={styles.add}>Add</Text>
-          </TouchableOpacity>
-
-          <Text style={styles.sectionHeader}>Recommended for You</Text>
-          {allMenus?.data?.map((obj: any) => (
-            <ShowMenus data={obj} addToCart={addToCart} />
-          ))}
+    <View style={{ flex: 1, backgroundColor: Colors.primaryBg }}>
+      <View style={styles.detailsContainer}>
+        {data?.Items.map((obj: any) => (
+          <ShowMenus data={obj} addToCart={addToCart} />
+        ))}
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginRight: 12,
+          marginTop: 16,
+        }}
+      >
+        <View style={{ width: "30%" }} />
+        <View
+          style={{
+            width: "70%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
+          <Text style={styles.total}>Total Amount + Charges:</Text>
+          <Text style={styles.totalText}>₹{data?.bill_total}</Text>
         </View>
-      </ParallaxScrollView>
+      </View>
 
-      {products?.length > 0 && (
-        <View style={styles.footer}>
-          <SafeAreaView edges={["bottom"]} style={{ backgroundColor: "#fff" }}>
-            <Link href="/basket" asChild>
-              <TouchableOpacity style={styles.fullButton}>
-                <Text style={styles.basket}>{products.length} Qty</Text>
-                <Text style={styles.footerText}>View Basket</Text>
-                <Text style={styles.basketTotal}>
-                  ₹{(total + FEES.service + FEES.delivery)?.toFixed(2)}
-                </Text>
-              </TouchableOpacity>
-            </Link>
-          </SafeAreaView>
+      <Drawer
+        isContentVisible={isContentVisible}
+        setContentVisible={setContentVisible}
+        setCancel={setCancel}
+      />
+      {isContentVisible && (
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "center",
+            marginHorizontal: 12,
+            marginTop: 24,
+          }}
+        >
+          <TouchableOpacity onPress={() => makePhoneCall(data?.user_number)}>
+            <Text
+              style={{
+                ...styles.payment,
+                color: Colors.primary,
+                borderColor: Colors.primary,
+                marginRight: 24,
+              }}
+            >
+              Contact Customer
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => setCancel(true)}>
+            <Text
+              style={{
+                ...styles.payment,
+                borderColor: "red",
+              }}
+            >
+              Cancel Order
+            </Text>
+          </TouchableOpacity>
         </View>
       )}
 
-    </>
+      <View style={styles.footer}>
+        <SafeAreaView edges={["bottom"]} style={{ backgroundColor: "#fff" }}>
+          {cancel ? (
+            <>
+              <View
+                style={{
+                  flexDirection: "row",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    borderColor: cancel ? "red" : "black",
+                  }}
+                  placeholder="Enter Cancel Reason"
+                  value={cancelReason}
+                  onChangeText={(text: any) => {
+                    setError("");
+                    setCancelReason(text);
+                  }}
+                />
+                <TouchableOpacity
+                  style={styles.fullButton}
+                  onPress={handleCancel}
+                >
+                  <Text style={styles.footerText}>Cancel Order</Text>
+                </TouchableOpacity>
+              </View>
+              {error && <Text style={styles.errorText}>{error}</Text>}
+            </>
+          ) : (
+            <>
+              {data?.payment_type === "online" ? (
+                <View>
+                  <TouchableOpacity
+                    style={styles.fullButton}
+                    onPress={() =>
+                      completeOrder(
+                        {
+                          id: data?.id,
+                          orderStatus: "delivered",
+                        },
+                        false
+                      )
+                    }
+                  >
+                    <Text style={styles.footerText}>Complete Order</Text>
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
+                  <TextInput
+                    style={styles.input}
+                    placeholder="Cash In Hand"
+                    value={cash}
+                    keyboardType="numeric"
+                    onChangeText={(text: any) => {
+                      setError("");
+                      setCash(text);
+                    }}
+                  />
+                  <TouchableOpacity
+                    style={styles.fullButton}
+                    onPress={() => handleCashCollection(data?.bill_total)}
+                  >
+                    <Text style={styles.footerText}>Collected</Text>
+                  </TouchableOpacity>
+                </View>
+              )}
+              {error && <Text style={styles.errorText}>{error}</Text>}
+            </>
+          )}
+        </SafeAreaView>
+      </View>
+    </View>
   );
 };
 
 const ShowMenus = (props: any) => {
-  const { data, addToCart } = props;
+  const { data } = props;
   return (
-    <Link<{ pathname: any; params: { id: any; data: any } }>
-      href={{
-        pathname: "/(modal)/dish",
-        params: { id: data.id, data: JSON.stringify(data) },
-      }}
-      asChild>
-      <TouchableOpacity style={styles.item}>
-        <View style={{ flex: 1 }}>
-          <View
-            style={{ flexDirection: "row", justifyContent: "space-between" }}>
-            <Text style={styles.dish}>{data.name}</Text>
-          </View>
-          <Text style={styles.dishText}>
-            {data.description?.length > 30
-              ? `${data.description?.slice(0, 2 * 40)}..`
-              : data.description}
-          </Text>
-          <Text style={styles.dishText}>${data.price}</Text>
-        </View>
+    <View style={styles.item}>
+      <View
+        style={{
+          flex: 1,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "space-between",
+        }}
+      >
         <View style={styles.container}>
           <Image source={{ uri: data.image }} style={styles.dishImage} />
-          <View style={styles.plusIconContainer}>
-            <TouchableOpacity onPress={() => addToCart(data)}>
-              <Ionicons name="add-circle" size={26} color={Colors.primary} />
-            </TouchableOpacity>
+        </View>
+
+        <View
+          style={{
+            width: "70%",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            alignItems: "center",
+          }}
+        >
+          <View>
+            <Text style={styles.dish}>{data.name}</Text>
+            <Text style={styles.dishText}>₹{data.price}</Text>
           </View>
+          <Text style={styles.qty}>X {data?.quantity}</Text>
+        </View>
+      </View>
+    </View>
+  );
+};
+
+const Drawer = (props: any) => {
+  const { isContentVisible, setContentVisible, setCancel } = props;
+
+  const toggleContent = () => {
+    setContentVisible(!isContentVisible);
+    setCancel(false);
+  };
+
+  return (
+    <View style={{ marginHorizontal: 12, marginTop: 20 }}>
+      <TouchableOpacity onPress={toggleContent}>
+        <View style={styles.headingContainer}>
+          <Text style={styles.section}>More</Text>
+          <AntDesign
+            name={isContentVisible ? "up" : "down"}
+            size={18}
+            color="#9f9aa1"
+          />
         </View>
       </TouchableOpacity>
-    </Link>
+    </View>
   );
 };
 
@@ -228,11 +334,15 @@ const styles = StyleSheet.create({
   detailsContainer: {
     backgroundColor: Colors.primaryBg,
   },
-  stickySection: {
-    backgroundColor: "#fff",
-    marginLeft: 70,
-    height: 138,
-    justifyContent: "center",
+  payment: {
+    fontSize: 16,
+    padding: 8,
+    paddingHorizontal: 20,
+    color: "red",
+    fontWeight: "800",
+    textAlign: "center",
+    borderRadius: 100,
+    borderWidth: 1,
   },
   roundButton: {
     width: 40,
@@ -275,25 +385,44 @@ const styles = StyleSheet.create({
     margin: 16,
   },
   item: {
-    backgroundColor: "#fff",
     padding: 16,
     flexDirection: "row",
     borderBottomColor: Colors.grey,
     borderBottomWidth: 1,
+    justifyContent: "space-between",
   },
   dishImage: {
-    height: 80,
-    width: 80,
+    height: 70,
+    width: 70,
     borderRadius: 4,
   },
   dish: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: "600",
+    textAlign: "left",
+  },
+  total: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
+  totalText: {
+    fontSize: 18,
+    fontWeight: "600",
+    color: "white",
+    backgroundColor: "#60B246",
+    paddingHorizontal: 20,
+    paddingVertical: 1,
   },
   dishText: {
-    fontSize: 14,
+    fontSize: 15,
     color: Colors.mediumDark,
-    paddingVertical: 4,
+    paddingVertical: 0,
+  },
+  qty: {
+    fontSize: 18,
+    color: Colors.primary,
+    fontWeight: "700",
+    textAlign: "center",
   },
   stickySegments: {
     position: "absolute",
@@ -366,7 +495,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flexDirection: "row",
     flex: 1,
-    justifyContent: "space-between",
+    justifyContent: "center",
     height: 50,
   },
   footerText: {
@@ -409,6 +538,32 @@ const styles = StyleSheet.create({
     fontWeight: "800",
     borderRadius: 8,
     backgroundColor: Colors.primary,
+  },
+  input: {
+    backgroundColor: "white",
+    height: 50,
+    paddingHorizontal: 10,
+    borderColor: "black",
+    borderWidth: 1,
+    borderRadius: 8,
+    width: "60%",
+    marginRight: 8,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 16,
+    marginBottom: 8,
+  },
+  headingContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    alignItems: "center",
+    paddingVertical: 16,
+  },
+  section: {
+    fontSize: 18,
+    fontWeight: "bold",
+    marginRight: 12,
   },
 });
 

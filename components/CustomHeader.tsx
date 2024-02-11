@@ -69,17 +69,16 @@ const CustomHeader = () => {
       <View style={styles.container}>
         <View style={styles.secondContainer}>
           <TouchableOpacity
-            onPress={() => openModal()}
             style={{ marginRight: 16 }}>
-            <Link href="/address" style={{ width: 30, height: 50 }}>
+            <Link href="/menus" style={{ width: 30, height: 50 }}>
               <Image
                 style={styles.bike}
                 source={require("@/assets/images/bike.png")}
               />
             </Link>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => openModal()}>
-            <Link href="/address">
+          <TouchableOpacity>
+            <Link href="/menus" >
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>Delivery · Now</Text>
                 <View style={styles.locationName}>

@@ -7,40 +7,41 @@ import Categories from "@/components/Categories";
 import {
   getBanners,
   getCategories,
+  getRiderOrders,
   getTopPicks,
   getUserInfo,
   updateUser,
 } from "@/core/services/home";
 import Loading from "@/components/Pages/Loading";
 
-import Restaurants from "@/components/Restaurants";
-import { Text, ScrollView, StyleSheet, RefreshControl, View } from "react-native";
+import {
+  Text,
+  ScrollView,
+  StyleSheet,
+  RefreshControl,
+  View,
+  ViewBase,
+} from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import useCommonStore from "@/store/commonStore";
 
 import * as Device from "expo-device";
-import { LogBox, Platform } from "react-native";
+import { Platform } from "react-native";
+
 import * as Notifications from "expo-notifications";
-import Favourites from "@/components/Pages/Favourites";
 import CustomHeader from "@/components/CustomHeader";
 
+import Favourites from "@/components/Pages/Favourites";
 
 const Page = () => {
-  const banners = getBanners({});
-  const categories = getCategories({});
-
+  const orders = getRiderOrders({}, 8);
   const user = getUserInfo({});
-  const topMenus = getTopPicks({});
 
   const [refreshing, setRefreshing] = React.useState(false);
   const { setUserInfo, userInfo } = useCommonStore();
 
-  const dataLoading =
-    banners.isLoading ||
-    categories.isLoading ||
-    user.isLoading ||
-    topMenus.isLoading;
+  const dataLoading = orders.isLoading;
 
   useEffect(() => {
     if (user.data && !userInfo) {
@@ -50,9 +51,8 @@ const Page = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
-    banners.refetch();
-    categories.refetch();
-    topMenus.refetch();
+    orders.refetch();
+
     setTimeout(() => {
       setRefreshing(false);
     }, 2000);
@@ -113,10 +113,10 @@ const Page = () => {
       {dataLoading ? (
         <Loading />
       ) : (
-        <>
+        <ScrollView onScroll={onRefresh}>
           <CustomHeader />
-          <Favourites />
-        </>
+          <Favourites orders={orders?.data} refetch={orders.refetch} />
+        </ScrollView>
       )}
     </SafeAreaView>
   );

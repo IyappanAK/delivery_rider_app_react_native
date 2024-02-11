@@ -5,60 +5,61 @@ import {
   View,
   ScrollView,
   Pressable,
-  ToastAndroid,
+  Linking,
 } from "react-native";
+
 import React from "react";
 
 import Colors from "@/constants/Colors";
 import utils from "@/constants/utils";
 
 import { useNavigation } from "expo-router";
-import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
-
-import useBasketStore from "@/store/basketStore";
-import { getUserInfo } from "@/core/services/home";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { RefreshControl } from "react-native";
 
-export default function favourites() {
-  const navigation = useNavigation();
-  const userInfo = getUserInfo({});
+import { TouchableOpacity } from "react-native-gesture-handler";
 
-  function nav() {
-    navigation.goBack();
-  }
+export default function favourites(props: any) {
+  const { orders, refetch } = props;
 
   return (
-    <View style={{ backgroundColor: Colors.primaryBg, flex: 1 }}>
-      {userInfo?.data?.favoriteMenus?.length > 0 ? (
-        <MenuCards
-          data={userInfo?.data?.favoriteMenus}
-          refetch={userInfo.refetch}
-        />
+    <View>
+      {orders.length > 0 ? (
+        <MenuCards data={orders} refetch={refetch} />
       ) : (
         <View style={styles.container}>
           <View style={styles.imageContainer}>
             <Image
               style={styles.emptyIllustration}
-              source={require("@/assets/images/favourite.png")}
+              source={require("@/assets/images/deliveryboy.png")}
               resizeMode="contain"
             />
             <Text
               style={{
+                marginTop: 12,
                 fontSize: 18,
                 fontWeight: "bold",
                 textAlign: "center",
-              }}>
-              No Items Found
+              }}
+            >
+              No Orders Found
             </Text>
-          </View>
-          <View style={{ flex: 2, width: "100%" }}>
-            <HalfBottomButton
-              title="Explore Now"
-              handleClick={nav}
-              width={"50%"}
-            />
+            <TouchableOpacity
+              onPress={() => {
+                refetch();
+              }}
+            >
+              <Text
+                style={{
+                  ...styles.payment,
+                  color: Colors.primary,
+                  marginTop: 24,
+                  paddingHorizontal: 24,
+                  borderColor: Colors.primary,
+                }}
+              >
+                Refresh
+              </Text>
+            </TouchableOpacity>
           </View>
         </View>
       )}
@@ -71,20 +72,10 @@ const MenuCards = (props: any) => {
   const navigation = useNavigation();
 
   function nav(data: any) {
-    navigation.navigate("details", { data, isFav: true });
+    navigation.navigate("details", { data });
     navigation.canGoBack(true);
   }
-  const { addProduct } = useBasketStore();
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const addToCart = (data: any) => {
-    addProduct(data);
-    ToastAndroid.showWithGravity(
-      "Item Added to Cart",
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    );
-  };
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
@@ -94,40 +85,93 @@ const MenuCards = (props: any) => {
     }, 2000);
   }, []);
 
+  const openDirectionsInGoogleMaps = (latitude: any, longitude: any) => {
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${latitude},${longitude}`;
+
+    Linking.canOpenURL(url).then((supported) => {
+      if (supported) {
+        Linking.openURL(url);
+      } else {
+        console.log("Cannot open Google Maps");
+      }
+    });
+  };
+
   return (
     <ScrollView
       showsVerticalScrollIndicator={true}
       contentContainerStyle={{
-        paddingVertical: 16,
+        paddingVertical: 24,
         alignItems: "center",
         backgroundColor: Colors.primaryBg,
       }}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      }
+    >
       {data.map((obj: any, index: any) => (
         <View key={index}>
-          <View>
-            <View style={styles.categoryCard}>
-              <Pressable style={styles.image} onPress={() => nav(obj)}>
-                <Image source={{ uri: obj.image }} style={styles.image} />
-              </Pressable>
-              <View style={styles.categoryBox}>
-                <Pressable onPress={() => nav(obj)} style={{ width: "80%" }}>
-                  <Text style={styles.categoryText}>{obj.name}</Text>
-                  <Text style={styles.price}>Starts from ₹{obj?.price}</Text>
-                  <Text style={styles.des}>
-                    {obj.description?.length > 30
-                      ? `${obj.description?.slice(0, 40)}...`
-                      : obj.description}
+          <Pressable style={styles.categoryCard}>
+            <Pressable style={styles.categoryBox} onPress={() => nav(obj)}>
+              <Pressable onPress={() => nav(obj)}>
+                <View style={styles.textContainer}>
+                  <Text style={styles.categoryText}>ID:</Text>
+                  <Text style={{ ...styles.price, marginLeft: 6 }}>
+                    #000{obj.id}
                   </Text>
-                </Pressable>
-                <TouchableOpacity onPress={() => addToCart(obj)}>
-                  <Text style={styles.add}>Add</Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                  <Text style={styles.categoryText}>Items:</Text>
+                  <Text style={{ ...styles.price, marginLeft: 6 }}>
+                    {obj?.Items?.length}
+                  </Text>
+                </View>
+
+                <View style={styles.textContainer}>
+                  <Text style={styles.categoryText}>Total:</Text>
+                  <Text style={{ ...styles.price, marginLeft: 6 }}>
+                    ₹{obj.bill_total}
+                  </Text>
+                </View>
+              </Pressable>
+
+              <TouchableOpacity onPress={() => nav(obj)}>
+                <Text
+                  style={{
+                    ...styles.payment,
+                    color: obj.payment_type == "online" ? "green" : "red",
+                    borderColor: obj.payment_type == "online" ? "green" : "red",
+                  }}
+                >
+                  {obj.payment_type == "online" ? "Online" : "COD"}
+                </Text>
+              </TouchableOpacity>
+            </Pressable>
+            <Pressable style={styles.textContainer} onPress={() => nav(obj)}>
+              <Text style={styles.categoryText}>To:</Text>
+              <Text style={{ ...styles.price, marginLeft: 6 }}>
+                {obj?.address.house_no}, {obj?.address.street_address},{" "}
+                {obj?.address.area}, {obj?.address.landmark},{" "}
+                {obj?.address.city},{obj?.address.state}-{obj?.address.pincode}.
+              </Text>
+            </Pressable>
+            <View style={styles.secondCard}>
+              <View>
+                <TouchableOpacity
+                  onPress={() =>
+                    openDirectionsInGoogleMaps(
+                      obj?.address?.lat,
+                      obj?.address?.lon
+                    )
+                  }
+                  style={styles.btnmain}
+                >
+                  <Text style={styles.add}>Location</Text>
                 </TouchableOpacity>
               </View>
             </View>
-          </View>
+          </Pressable>
         </View>
       ))}
     </ScrollView>
@@ -139,54 +183,40 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: "red",
-    paddingHorizontal: 24,
-
+    marginHorizontal: 24,
+    height: utils.fullheight / 1.5,
   },
   imageContainer: {
     backgroundColor: "white",
-    flex: 10,
     justifyContent: "center",
     alignItems: "center",
-    width: "100%",
   },
   emptyIllustration: {
-    width: "100%",
     height: 300,
   },
   categoryCard: {
     width: utils.fullwidth - 24,
-    height: 300,
     backgroundColor: Colors.primaryBg,
-    elevation: 2,
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 4,
-    },
-    shadowOpacity: 0.06,
+    elevation: 1,
+    padding: 12,
+    borderColor: "#E5E5E5",
+    borderWidth: 1,
     borderRadius: 12,
-    marginBottom: 16,
+    marginBottom: 24,
   },
   categoryText: {
     fontSize: 16,
     fontWeight: "800",
   },
-  des: { color: Colors.medium, fontSize: 14, fontWeight: "500" },
-  price: { fontSize: 14, fontWeight: "500", paddingVertical: 4 },
-  image: {
-    flex: 5,
-    width: "100%",
-    height: 150,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
+  price: { fontSize: 16, fontWeight: "500" },
   categoryBox: {
-    flex: 2,
-    padding: 10,
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+  },
+  secondCard: {
+    marginTop: 12,
+    justifyContent: "center",
   },
   add: {
     fontSize: 16,
@@ -194,7 +224,22 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     color: "white",
     fontWeight: "800",
-    borderRadius: 8,
+    textAlign: "center",
+  },
+  textContainer: { flexDirection: "row", marginBottom: 4 },
+  btnmain: {
     backgroundColor: Colors.primary,
+    width: "40%",
+    borderRadius: 100,
+  },
+  payment: {
+    fontSize: 16,
+    padding: 6,
+    paddingHorizontal: 20,
+    color: "red",
+    fontWeight: "800",
+    textAlign: "center",
+    borderRadius: 100,
+    borderWidth: 1,
   },
 });
