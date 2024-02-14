@@ -1,82 +1,43 @@
-import {
-  View,
-  Text,
-  TextInput,
-  StyleSheet,
-  Image,
-  ToastAndroid,
-} from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 
-import React, { useEffect, useState } from "react";
-import { queries } from "@/core/constants/queryKeys";
-
-import { useQueryClient } from "@tanstack/react-query";
-import { useNavigation } from "@react-navigation/native";
-
-import { getUserInfo, updateUser } from "@/core/services/home";
-import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
+import React from "react";
 import Colors from "@/constants/Colors";
 
+import { getTripCash } from "@/core/services/home";
+import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
+import Loading from "@/components/Pages/Loading";
+
 export default function Profile() {
-  const [name, setName] = useState<any>("");
-  const [email, setEmail] = useState<any>("");
-
-  const queryClient = useQueryClient();
-  const user = getUserInfo({});
-
-  const nav = useNavigation();
-  const updateUserInfo = updateUser({
-    onSuccess: () => {
-      user.refetch();
-      queryClient.invalidateQueries({
-        queryKey: queries.home.userAddress.queryKey,
-      });
-      ToastAndroid.showWithGravity(
-        "Details updated successfully",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
-      nav.goBack();
-    },
-    onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
-    },
-  });
+  const tripCash = getTripCash({});
 
   const handleSave = () => {
-    updateUserInfo.mutate({ name, email });
+    tripCash.refetch();
   };
 
-  useEffect(() => {
-    setName(user?.data?.name);
-    setEmail(user?.data?.email);
-  }, []);
-
   return (
-    <View style={styles.container}>
-      <View style={styles.userProfileContainer}>
-        <Image
-          source={{
-            uri: user?.data?.image,
-          }}
-          style={styles.userProfileImage}
-        />
-        <Text style={styles.userProfileText}>{user?.data?.name}</Text>
-      </View>
-
-      <View style={styles.formGroup}>
-        <Text style={styles.inputLabel}>Full Name</Text>
-        <TextInput style={styles.input} value={name} onChangeText={setName} />
-      </View>
-      <View style={styles.formGroup}>
-        <Text style={styles.inputLabel}>Email</Text>
-        <TextInput style={styles.input} value={email} onChangeText={setEmail} />
-      </View>
-      <HalfBottomButton title={"Save"} handleClick={handleSave} width={"45%"} />
+    <View
+      style={{
+        backgroundColor: Colors.primaryBg,
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
+      {tripCash.isLoading ? (
+        <Loading />
+      ) : (
+        <View style={styles.container}>
+          <View style={styles.userProfileContainer}>
+            <Text style={styles.userProfileText}>Pending Trip Cash Amount</Text>
+            <Text style={styles.totalText}>₹{tripCash?.data?.trip_cash}</Text>
+          </View>
+          <HalfBottomButton
+            title={"Refresh"}
+            handleClick={handleSave}
+            width={"63%"}
+          />
+        </View>
+      )}
     </View>
   );
 }
@@ -86,6 +47,14 @@ const styles = StyleSheet.create({
     flex: 1,
     padding: 16,
     backgroundColor: Colors.primaryBg,
+  },
+  totalText: {
+    fontSize: 20,
+    fontWeight: "800",
+    color: "white",
+    backgroundColor: "#60B246",
+    paddingHorizontal: 20,
+    paddingVertical: 1,
   },
   heading: {
     fontSize: 20,
@@ -109,6 +78,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   userProfileContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
     padding: 15,
     paddingTop: 0,
@@ -116,9 +87,10 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   userProfileText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    fontSize: 22,
     color: "black",
+    fontWeight: "800",
+    marginBottom: 16,
   },
   userProfileImage: {
     width: 96,

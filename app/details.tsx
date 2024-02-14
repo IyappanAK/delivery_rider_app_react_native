@@ -44,7 +44,10 @@ const Details = () => {
   const updateOrders = updateOrder({
     onSuccess: () => {
       queryClient.invalidateQueries({
-        queryKey: queries.home.riderOrder.queryKey,
+        queryKey: [
+          queries.home.riderOrder.queryKey,
+          queries.home.tripCash.queryKey,
+        ],
       });
       ToastAndroid.showWithGravity(
         "Successfully updated",
@@ -121,7 +124,7 @@ const Details = () => {
   return (
     <View style={{ flex: 1, backgroundColor: Colors.primaryBg }}>
       <View style={styles.detailsContainer}>
-        {data?.Items.map((obj: any) => (
+        {data?.Items?.map((obj: any) => (
           <ShowMenus data={obj} addToCart={addToCart} />
         ))}
       </View>

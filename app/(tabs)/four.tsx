@@ -5,23 +5,30 @@ import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
 import Colors from "@/constants/Colors";
 
 import utils, { Icon } from "@/constants/utils";
-import { Link } from "expo-router";
+import { Link, useFocusEffect } from "expo-router";
 
 import * as SecureStore from "expo-secure-store";
 import useBasketStore from "@/store/basketStore";
 
-import { getUserInfo } from "@/core/services/home";
+import { getTripCash, getUserInfo } from "@/core/services/home";
 import { useQueryClient } from "@tanstack/react-query";
+import { AkiImage } from "@/constants/Images";
 
 export default function Menus() {
   const user = getUserInfo({});
-  const { clearToken } = useBasketStore();
+  const tripCash = getTripCash({});
 
   const queryClient = useQueryClient();
+  const { clearToken } = useBasketStore();
+
   const data = [
-    { title: "My Orders", icon: "reorder-three", nav: "/orders" },
-    { title: "Address", icon: "location", nav: "/address" },
-    { title: "Profile", icon: "person-circle-outline", nav: "/profile" },
+    {
+      title: "My Orders",
+      icon: "analytics-sharp",
+      nav: "/orders",
+      batch: false,
+    },
+    { title: "Trip Cash", icon: "cash-sharp", nav: "/profile", batch: true },
   ];
 
   const handleLogout = () => {
@@ -47,12 +54,16 @@ export default function Menus() {
     user.refetch();
   });
 
+  useFocusEffect(() => {
+    tripCash.refetch();
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.userProfileContainer}>
         <Image
           source={{
-            uri: user?.data?.image,
+            uri: user?.data?.image || AkiImage,
           }}
           style={styles.userProfileImage}
         />
@@ -68,7 +79,25 @@ export default function Menus() {
                 <Icon name={item.icon} size={24} color={Colors.primary} />
                 <Text style={styles.menuText}>{item.title}</Text>
               </View>
-              <Icon name={"chevron-forward"} size={24} color={Colors.primary} />
+
+              <View style={styles.menuItem}>
+                {item.batch && (
+                  <Icon
+                    name={
+                      tripCash?.data?.trip_cash > 0
+                        ? "notifications-circle"
+                        : ""
+                    }
+                    size={24}
+                    color={"red"}
+                  />
+                )}
+                <Icon
+                  name={"chevron-forward"}
+                  size={24}
+                  color={Colors.primary}
+                />
+              </View>
             </View>
           </Link>
         )}

@@ -140,95 +140,6 @@ function RootLayoutNav() {
         <Stack>
           <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           <Stack.Screen
-            name="(modal)/filter"
-            options={{
-              presentation: "modal",
-              headerTitle: "Filter",
-              headerShadowVisible: false,
-              headerStyle: {
-                backgroundColor: Colors.lightGrey,
-              },
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="close-outline" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="(modal)/location-search"
-            options={{
-              presentation: "fullScreenModal",
-              headerTitle: "Select location",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="close-outline" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="(modal)/dish"
-            options={{
-              presentation: "modal",
-              headerTitle: "",
-              headerTransparent: true,
-
-              headerLeft: () => (
-                <TouchableOpacity
-                  style={{
-                    backgroundColor: "#fff",
-                    borderRadius: 20,
-                    padding: 6,
-                  }}
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="close-outline" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="basket"
-            options={{
-              headerTitle: "Basket",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="razorpay"
-            options={{
-              headerTitle: "Payments",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
             name="menus"
             options={{
               headerTitle: "Account",
@@ -247,21 +158,6 @@ function RootLayoutNav() {
             name="profile"
             options={{
               headerTitle: "Edit Profile",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="address"
-            options={{
-              headerTitle: "Address",
               headerLeft: () => (
                 <TouchableOpacity
                   onPress={() => {
@@ -323,27 +219,6 @@ function RootLayoutNav() {
             name="trackOrder"
             options={{
               headerTitle: "Track Order",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="search-page"
-            options={{
-              headerShown: false,
-            }}
-          />
-          <Stack.Screen
-            name="category-menu"
-            options={{
-              headerTitle: "Category Menu",
               headerLeft: () => (
                 <TouchableOpacity
                   onPress={() => {

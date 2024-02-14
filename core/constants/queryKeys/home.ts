@@ -12,4 +12,5 @@ export const homeQueries = createQueryKeys("home", {
   order: null,
   pincodes: null,
   riderOrder: null,
+  tripCash: null,
 });

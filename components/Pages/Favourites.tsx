@@ -9,13 +9,12 @@ import {
 } from "react-native";
 
 import React from "react";
-
-import Colors from "@/constants/Colors";
 import utils from "@/constants/utils";
 
+import Colors from "@/constants/Colors";
 import { useNavigation } from "expo-router";
-import { RefreshControl } from "react-native";
 
+import { RefreshControl } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export default function favourites(props: any) {
@@ -157,7 +156,7 @@ const MenuCards = (props: any) => {
               </Text>
             </Pressable>
             <View style={styles.secondCard}>
-              <View>
+              <View style={{ width: "40%" }}>
                 <TouchableOpacity
                   onPress={() =>
                     openDirectionsInGoogleMaps(
@@ -170,6 +169,7 @@ const MenuCards = (props: any) => {
                   <Text style={styles.add}>Location</Text>
                 </TouchableOpacity>
               </View>
+              <View />
             </View>
           </Pressable>
         </View>
@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
   },
   secondCard: {
     marginTop: 12,
-    justifyContent: "center",
+    justifyContent: "space-between",
   },
   add: {
     fontSize: 16,
@@ -229,7 +229,6 @@ const styles = StyleSheet.create({
   textContainer: { flexDirection: "row", marginBottom: 4 },
   btnmain: {
     backgroundColor: Colors.primary,
-    width: "40%",
     borderRadius: 100,
   },
   payment: {

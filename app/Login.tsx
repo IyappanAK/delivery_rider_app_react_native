@@ -13,6 +13,7 @@ import {
 import useBasketStore from "@/store/basketStore";
 import utils from "@/constants/utils";
 import { createUser, otpGenerate, verifyOTP } from "@/core/services/home";
+import { AkiImage } from "@/constants/Images";
 
 const LoginScreen = () => {
   const [name, setName] = useState("");
@@ -217,8 +218,7 @@ const LoginScreen = () => {
             phone_number: phoneNumber.toString(),
             password: "1234",
             role_id: 3,
-            image:
-              "https://vgts-dev.s3.ap-south-1.amazonaws.com/turtle-dev//115004b5-0d08-43a2-826f-2b40f144438dGirl%3DOff%2C%20Avatar%3D01.png",
+            image: AkiImage,
           });
         } else setVerificationCodeError("Entered OTP is Invalid.");
       } else {
@@ -317,7 +317,8 @@ const LoginScreen = () => {
               </Text>
               <TouchableOpacity
                 style={styles.submitButton}
-                onPress={handleSubmit}>
+                onPress={handleSubmit}
+              >
                 {otpVerifyToCreate.isPending ||
                 user.isPending ||
                 generateOTP.isPending ? (
@@ -337,7 +338,8 @@ const LoginScreen = () => {
             <>
               <TouchableOpacity
                 style={styles.verifyButton}
-                onPress={handleVerify}>
+                onPress={handleVerify}
+              >
                 {generateOTP.isPending ? (
                   <View style={styles.loading}>
                     <ActivityIndicator size="small" color="white" />
@@ -388,7 +390,8 @@ const LoginScreen = () => {
                 Don't receive a code !{" "}
                 <Text
                   onPress={handleOTP}
-                  style={{ fontWeight: "800", fontSize: 14 }}>
+                  style={{ fontWeight: "800", fontSize: 14 }}
+                >
                   Please resend.
                 </Text>
               </Text>
@@ -397,7 +400,8 @@ const LoginScreen = () => {
           {enableOtp ? (
             <TouchableOpacity
               style={styles.signInButton}
-              onPress={handleSignIn}>
+              onPress={handleSignIn}
+            >
               {otpVerify.isPending ? (
                 <View style={styles.loading}>
                   <ActivityIndicator size="small" color="white" />
@@ -414,7 +418,8 @@ const LoginScreen = () => {
                     flexDirection: "row",
                     justifyContent: "space-evenly",
                     alignItems: "center",
-                  }}>
+                  }}
+                >
                   <ActivityIndicator size="small" color="white" />
                 </View>
               ) : (
@@ -422,10 +427,6 @@ const LoginScreen = () => {
               )}
             </TouchableOpacity>
           )}
-          <Text style={styles.createAccountText} onPress={handleCreateAccount}>
-            Don't have an account ?
-            <Text style={{ fontWeight: "800" }}> Create One</Text>
-          </Text>
         </View>
       )}
     </View>

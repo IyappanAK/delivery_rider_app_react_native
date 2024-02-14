@@ -33,6 +33,7 @@ import * as Notifications from "expo-notifications";
 import CustomHeader from "@/components/CustomHeader";
 
 import Favourites from "@/components/Pages/Favourites";
+import { useFocusEffect } from "expo-router";
 
 const Page = () => {
   const orders = getRiderOrders({}, 8);
@@ -48,6 +49,10 @@ const Page = () => {
       setUserInfo(user.data);
     }
   }, [user.data]);
+
+  useFocusEffect(() => {
+    orders.refetch();
+  });
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);

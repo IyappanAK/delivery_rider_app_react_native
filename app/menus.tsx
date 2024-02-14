@@ -10,7 +10,9 @@ import useBasketStore from "@/store/basketStore";
 import { getUserInfo } from "@/core/services/home";
 import { useQueryClient } from "@tanstack/react-query";
 
+import { AkiImage } from "@/constants/Images";
 import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
+
 import { View, Text, FlatList, StyleSheet, Image, Alert } from "react-native";
 
 export default function Menus() {
@@ -42,9 +44,8 @@ export default function Menus() {
   });
 
   const data = [
-    { title: "My Orders", icon: "reorder-three", nav: "/orders" },
-    { title: "Address", icon: "location", nav: "/address" },
-    { title: "Profile", icon: "person-circle-outline", nav: "/profile" },
+    { title: "My Orders", icon: "analytics-sharp", nav: "/orders" },
+    { title: "Trip Cash", icon: "cash-sharp", nav: "/profile" },
   ];
 
   return (
@@ -52,7 +53,7 @@ export default function Menus() {
       <View style={styles.userProfileContainer}>
         <Image
           source={{
-            uri: user?.data?.image,
+            uri: user?.data?.image || AkiImage,
           }}
           style={styles.userProfileImage}
         />

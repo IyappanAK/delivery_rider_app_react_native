@@ -74,7 +74,7 @@ export const searchMenus = (data: any) =>
 
 export const getUsersOrders = (data: any) =>
   GET({
-    url: ENV.BASE_URL + `orders?page=${data.meta.page}&pageSize=5`,
+    url: ENV.BASE_URL + `rider-order-history?page=${data.meta.page}&pageSize=5`,
   });
 
 export const postReviews = (data: any) =>
@@ -121,6 +121,13 @@ export const getRiderOrder = (id: any) =>
   GET({
     url: ENV.BASE_URL + `/rider-orders?id=${id}`,
   });
+
+
+export const getTripCash = () =>
+  GET({
+    url: ENV.BASE_URL + "rider-trip-cash",
+  });
+
 
 export const test = () =>
   GET({

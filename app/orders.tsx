@@ -17,7 +17,6 @@ import { useNavigation } from "@react-navigation/native";
 import { getUserSpecifiedOrders } from "@/core/services/home";
 
 import Loading from "@/components/Pages/Loading";
-import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
 
 export default function OrderHistory() {
   const navigation = useNavigation();
@@ -58,7 +57,8 @@ export default function OrderHistory() {
       style={{
         flex: 1,
         backgroundColor: Colors.primaryBg,
-      }}>
+      }}
+    >
       {userOrders.isLoading ? (
         <Loading />
       ) : (
@@ -70,13 +70,14 @@ export default function OrderHistory() {
               style={styles.container}
               refreshControl={
                 <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-              }>
+              }
+            >
               <>
                 {userOrders?.data?.orders?.map((item, i) => {
                   const indianDateTime = moment
                     .utc(item?.created_at)
                     .utcOffset("+05:30");
-                  const date = indianDateTime.format("YYYY-MM-DD");
+                  const date = indianDateTime.format("DD-MM-YYYY");
                   const time = indianDateTime.format("hh:mm A");
                   return (
                     <View style={{ paddingVertical: 0 }} key={i}>
@@ -84,7 +85,8 @@ export default function OrderHistory() {
                         style={{
                           ...styles.orderContainer,
                           width: fullwidth - 20,
-                        }}>
+                        }}
+                      >
                         <View style={styles.flex}>
                           <Text style={styles.title}>
                             {item?.Items.length > 1
@@ -103,7 +105,8 @@ export default function OrderHistory() {
                                 fontSize: 14,
                                 fontWeight: "800",
                                 color: "#666",
-                              }}>
+                              }}
+                            >
                               Order ID #000{item?.id}
                             </Text>
                             <Text
@@ -111,7 +114,8 @@ export default function OrderHistory() {
                                 fontSize: 14,
                                 fontWeight: "800",
                                 color: "#666",
-                              }}>
+                              }}
+                            >
                               {date} at {time}
                             </Text>
                           </View>
@@ -124,7 +128,8 @@ export default function OrderHistory() {
                                   : item.orderStatus == "cancelled"
                                   ? "red"
                                   : Colors.pending,
-                            }}>
+                            }}
+                          >
                             {item?.orderStatus == "new"
                               ? "Pending"
                               : item?.orderStatus == "picked"
@@ -135,63 +140,14 @@ export default function OrderHistory() {
                         </View>
 
                         <View style={styles.buttonContainer}>
-                          {/* {item.orderStatus === "cancelled" && (
-                      <View
-                        style={{
-                          width: fullwidth / 2.5,
-                          height: 42,
-                          ...styles.button,
-                        }}>
-                        <Link
-                          href={{
-                            pathname: "/razorpay",
-                            params: { orderTotal: item?.bill_total },
-                          }}
-                          style={styles.link}>
-                          <Icon
-                            name={"refresh-outline"}
-                            size={20}
-                            color={Colors.tranparentButtonColor}
-                            mb={10}
-                          />
-                          <Text style={styles.buttonText}>Reorder</Text>
-                        </Link>
-                      </View>
-                    )} */}
-                          {item.orderStatus === "delivered" && (
-                            <>
-                              <View
-                                style={{
-                                  width: "100%",
-                                  height: 42,
-                                  ...styles.button,
-                                }}>
-                                <Pressable
-                                  onPress={() => {
-                                    navigation.navigate("review", {
-                                      data: JSON.stringify(item),
-                                    });
-                                    navigation.canGoBack(true);
-                                  }}
-                                  style={styles.link}>
-                                  <Text style={styles.buttonText}>
-                                    Rate Order
-                                  </Text>
-                                </Pressable>
-                              </View>
-                            </>
-                          )}
-                          {(item.orderStatus === "preparing" ||
-                            item.orderStatus === "new" ||
-                            item.orderStatus === "ready" ||
-                            item.orderStatus === "picked" ||
-                            item.orderStatus === "cancelled") && (
+                          {item.orderStatus && (
                             <View
                               style={{
                                 width: "100%",
                                 height: 42,
                                 ...styles.button,
-                              }}>
+                              }}
+                            >
                               <Pressable
                                 onPress={() => {
                                   navigation.navigate("trackOrder", {
@@ -199,12 +155,13 @@ export default function OrderHistory() {
                                   });
                                   navigation.canGoBack(true);
                                 }}
-                                style={styles.link}>
+                                style={styles.link}
+                              >
                                 <Text style={styles.buttonText}>
                                   {" "}
                                   {item.orderStatus === "cancelled"
                                     ? "View"
-                                    : "Track"}{" "}
+                                    : "View"}{" "}
                                   Order
                                 </Text>
                               </Pressable>
@@ -217,19 +174,6 @@ export default function OrderHistory() {
                 })}
               </>
               <View style={styles.paginationContainer}>
-                {/* <Button
-                  title="Prev"
-                  color={Colors.primary}
-                  onPress={handlePrevPage}
-                  disabled={currentPage === 1}
-                />
-                <View style={{ marginHorizontal: 20 }} />
-                <Button
-                  title="Next"
-                  color={Colors.primary}
-                  onPress={handleNextPage}
-                  disabled={!userOrders.data?.hasNextPage}
-                /> */}
                 <Pressable
                   style={() => [
                     styles.paginationButton,
@@ -240,7 +184,8 @@ export default function OrderHistory() {
                     },
                   ]}
                   onPress={handlePrevPage}
-                  disabled={currentPage === 1}>
+                  disabled={currentPage === 1}
+                >
                   <Text style={styles.paginationButtonText}>Prev</Text>
                 </Pressable>
 
@@ -254,7 +199,8 @@ export default function OrderHistory() {
                     },
                   ]}
                   onPress={handleNextPage}
-                  disabled={!userOrders.data?.hasNextPage}>
+                  disabled={!userOrders.data?.hasNextPage}
+                >
                   <Text style={styles.paginationButtonText}>Next</Text>
                 </Pressable>
               </View>
@@ -267,11 +213,6 @@ export default function OrderHistory() {
 }
 
 function EmptyIllustration() {
-  const navigation = useNavigation();
-  function nav() {
-    navigation.goBack();
-    navigation.goBack();
-  }
   return (
     <>
       <View style={styles.emptyContainer}>
@@ -286,12 +227,10 @@ function EmptyIllustration() {
               fontSize: 18,
               fontWeight: "bold",
               textAlign: "center",
-            }}>
+            }}
+          >
             You don't have any order history
           </Text>
-        </View>
-        <View style={{ flex: 2, width: "100%" }}>
-          <HalfBottomButton title="Order Now" handleClick={nav} width={"50%"} />
         </View>
       </View>
     </>

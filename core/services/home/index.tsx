@@ -44,6 +44,12 @@ export const getUserSpecifiedOrders = (options: any, page: any) =>
     meta: { page },
     ...options,
   });
+  export const getTripCash = (options: any) =>
+    useQuery({
+      queryKey: queries.home.tripCash.queryKey,
+      queryFn: API.getTripCash,
+      ...options,
+    });
 
 export const getTopPicks = (options: any) =>
   useQuery({
