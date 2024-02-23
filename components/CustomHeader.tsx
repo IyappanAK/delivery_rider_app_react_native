@@ -4,7 +4,6 @@ import {
   SafeAreaView,
   StyleSheet,
   TouchableOpacity,
-  TextInput,
   Image,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
@@ -13,54 +12,17 @@ import BottomSheet from "./BottomSheet";
 import Colors from "../constants/Colors";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Link, useNavigation } from "expo-router";
+import { Link } from "expo-router";
 
-import { getUserInfo } from "@/core/services/home";
+import { getRestaurentDetails } from "@/core/services/home";
 import { BottomSheetModal } from "@gorhom/bottom-sheet";
-
-const SearchBar = () => {
-  const navigation = useNavigation();
-  function nav() {
-    navigation.navigate("search-page");
-    navigation.canGoBack(true);
-  }
-
-  return (
-    <TouchableOpacity onPressIn={nav} style={styles.searchContainer}>
-      <View style={styles.searchSection}>
-        <View style={styles.searchField}>
-          <Ionicons
-            style={styles.searchIcon}
-            name="ios-search"
-            size={20}
-            color={Colors.medium}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Discover the dishes you love"
-            editable={false}
-          />
-        </View>
-        {/* <Link href={"/(modal)/filter"} asChild>
-        <TouchableOpacity style={styles.optionButton}>
-          <Ionicons name="options-outline" size={20} color={Colors.primary} />
-        </TouchableOpacity>
-      </Link> */}
-      </View>
-    </TouchableOpacity>
-  );
-};
 
 const CustomHeader = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
-  const user = getUserInfo({});
-
-  const openModal = () => {
-    bottomSheetRef.current?.present();
-  };
+  const restaurent = getRestaurentDetails({});
 
   useEffect(() => {
-    user.refetch();
+    restaurent.refetch();
   }, []);
 
   return (
@@ -68,8 +30,7 @@ const CustomHeader = () => {
       <BottomSheet ref={bottomSheetRef} />
       <View style={styles.container}>
         <View style={styles.secondContainer}>
-          <TouchableOpacity
-            style={{ marginRight: 16 }}>
+          <TouchableOpacity style={{ marginRight: 16 }}>
             <Link href="/menus" style={{ width: 30, height: 50 }}>
               <Image
                 style={styles.bike}
@@ -78,12 +39,12 @@ const CustomHeader = () => {
             </Link>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Link href="/menus" >
+            <Link href="/menus">
               <View style={styles.titleContainer}>
                 <Text style={styles.title}>Delivery · Now</Text>
                 <View style={styles.locationName}>
                   <Text style={styles.subtitle}>
-                    {user?.data?.Address?.[0]?.area || "Select"}
+                    {restaurent?.data?.address?.area || "Select"}
                   </Text>
                   <Ionicons
                     name="chevron-down"

@@ -1,27 +1,11 @@
 import React, { useEffect } from "react";
 import Colors from "@/constants/Colors";
 
-import Carousel from "@/components/Carousel";
-import Categories from "@/components/Categories";
 
-import {
-  getBanners,
-  getCategories,
-  getRiderOrders,
-  getTopPicks,
-  getUserInfo,
-  updateUser,
-} from "@/core/services/home";
+import { getRiderOrders, getUserInfo, updateUser } from "@/core/services/home";
 import Loading from "@/components/Pages/Loading";
 
-import {
-  Text,
-  ScrollView,
-  StyleSheet,
-  RefreshControl,
-  View,
-  ViewBase,
-} from "react-native";
+import { ScrollView, StyleSheet } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 import useCommonStore from "@/store/commonStore";
