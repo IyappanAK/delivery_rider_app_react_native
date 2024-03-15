@@ -89,7 +89,8 @@ const OrderTrackingScreen = () => {
       showsVerticalScrollIndicator={false}
       refreshControl={
         <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }>
+      }
+    >
       <View style={styles.addressContainer}>
         <Text style={styles.currentAddress}>Delivery Address</Text>
         <Text style={styles.currentAddressText}>
@@ -115,7 +116,7 @@ const OrderTrackingScreen = () => {
           <Text style={styles.orderStatusSubText}> 25 Min</Text>
         </Text> */}
       </View>
-      <View style={{ height: 125 }}>
+      {/* <View style={{ height: 125 }}>
         <ProgressSteps {...progressStepsobj}>
           <ProgressStep label="Pending" nextBtnText="" previousBtnText="" />
           <ProgressStep
@@ -133,7 +134,7 @@ const OrderTrackingScreen = () => {
             finishBtnText=""
           />
         </ProgressSteps>
-      </View>
+      </View> */}
 
       <View style={styles.orderDetailContainer}>
         <View style={styles.justBetween}>
@@ -221,7 +222,8 @@ const Drawer = ({ item }) => {
             ListFooterComponent={
               <View>
                 <View
-                  style={{ height: 1, backgroundColor: Colors.grey }}></View>
+                  style={{ height: 1, backgroundColor: Colors.grey }}
+                ></View>
                 {/* <View style={styles.totalRow}>
                   <Text style={styles.total}>Subtotal</Text>
                   <Text style={{ fontSize: 18 }}>₹{total}</Text>
@@ -291,7 +293,7 @@ const styles = StyleSheet.create({
     fontWeight: "800",
   },
   orderStatusContainer: {
-    paddingTop: 20,
+    paddingVertical: 20,
     flexDirection: "row",
     justifyContent: "space-between",
     backgroundColor: "#fcfcfc",

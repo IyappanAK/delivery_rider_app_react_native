@@ -22,7 +22,7 @@ export default function favourites(props: any) {
 
   return (
     <View>
-      {orders.length > 0 ? (
+      {orders?.length > 0 ? (
         <MenuCards data={orders} refetch={refetch} />
       ) : (
         <View style={styles.container}>

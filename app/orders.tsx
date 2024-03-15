@@ -158,11 +158,8 @@ export default function OrderHistory() {
                                 style={styles.link}
                               >
                                 <Text style={styles.buttonText}>
-                                  {" "}
-                                  {item.orderStatus === "cancelled"
-                                    ? "View"
-                                    : "View"}{" "}
-                                  Order
+                                  {item?.payment_type &&
+                                    item?.payment_type.toUpperCase()}
                                 </Text>
                               </Pressable>
                             </View>
