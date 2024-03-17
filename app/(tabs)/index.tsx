@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import Colors from "@/constants/Colors";
 
-
 import { getRiderOrders, getUserInfo, updateUser } from "@/core/services/home";
 import Loading from "@/components/Pages/Loading";
 
@@ -18,6 +17,7 @@ import CustomHeader from "@/components/CustomHeader";
 
 import Favourites from "@/components/Pages/Favourites";
 import { useFocusEffect } from "expo-router";
+import { RefreshControl } from "react-native";
 
 const Page = () => {
   const orders = getRiderOrders({}, 8);
@@ -99,14 +99,21 @@ const Page = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {dataLoading ? (
-        <Loading />
-      ) : (
-        <ScrollView onScroll={onRefresh}>
-          <CustomHeader />
-          <Favourites orders={orders?.data} refetch={orders.refetch} />
-        </ScrollView>
-      )}
+      <ScrollView
+        style={styles.scrollView}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+      >
+        {dataLoading ? (
+          <Loading />
+        ) : (
+          <>
+            <CustomHeader />
+            <Favourites orders={orders?.data} refetch={orders.refetch} />
+          </>
+        )}
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -116,10 +123,8 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: Colors.primaryBg,
   },
-  header: {
-    fontSize: 18,
-    fontWeight: "bold",
-    paddingHorizontal: 16,
+  scrollView: {
+    flex: 1,
   },
 });
 
