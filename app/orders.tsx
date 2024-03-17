@@ -318,6 +318,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     color: "white",
     fontWeight: "700",
+    overflow: "hidden",
   },
   bottomButtonContainer: {
     flex: 1,

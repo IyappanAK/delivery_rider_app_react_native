@@ -8,6 +8,7 @@ import {
   ToastAndroid,
   Linking,
   Alert,
+  Platform,
 } from "react-native";
 
 import React, { useState } from "react";
@@ -132,14 +133,13 @@ const Details = () => {
         style={{
           flexDirection: "row",
           alignItems: "center",
-          marginRight: 12,
+          justifyContent: "flex-end",
           marginTop: 16,
+          paddingHorizontal: 12,
         }}
       >
-        <View style={{ width: "30%" }} />
         <View
           style={{
-            width: "70%",
             flexDirection: "row",
             justifyContent: "space-between",
           }}
@@ -344,7 +344,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "800",
     textAlign: "center",
-    borderRadius: 100,
+    borderRadius: 20,
     borderWidth: 1,
   },
   roundButton: {
@@ -407,6 +407,7 @@ const styles = StyleSheet.create({
   total: {
     fontSize: 18,
     fontWeight: "600",
+    marginRight: Platform.OS == "ios" ? 12 : 0,
   },
   totalText: {
     fontSize: 18,
@@ -415,6 +416,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#60B246",
     paddingHorizontal: 20,
     paddingVertical: 1,
+    marginLeft: 12,
   },
   dishText: {
     fontSize: 15,

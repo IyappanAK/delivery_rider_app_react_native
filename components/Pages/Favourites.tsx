@@ -238,7 +238,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "800",
     textAlign: "center",
-    borderRadius: 100,
+    borderRadius: 20,
     borderWidth: 1,
   },
 });
