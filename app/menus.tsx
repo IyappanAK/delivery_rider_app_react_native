@@ -7,7 +7,7 @@ import utils, { Icon } from "@/constants/utils";
 import * as SecureStore from "expo-secure-store";
 import useBasketStore from "@/store/basketStore";
 
-import { getUserInfo } from "@/core/services/home";
+import { getTripCash, getUserInfo } from "@/core/services/home";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { AkiImage } from "@/constants/Images";
@@ -17,7 +17,10 @@ import { View, Text, FlatList, StyleSheet, Image, Alert } from "react-native";
 
 export default function Menus() {
   const { clearToken } = useBasketStore();
+
   const user = getUserInfo({});
+  const tripCash = getTripCash({});
+
   const queryClient = useQueryClient();
 
   const handleLogout = () => {
@@ -45,7 +48,7 @@ export default function Menus() {
 
   const data = [
     { title: "My Orders", icon: "analytics-sharp", nav: "/orders" },
-    { title: "Trip Cash", icon: "cash-sharp", nav: "/profile" },
+    { title: "Trip Cash", icon: "cash-sharp", nav: "/profile", batch: true },
   ];
 
   return (
@@ -69,7 +72,25 @@ export default function Menus() {
                 <Icon name={item.icon} size={24} color={Colors.primary} />
                 <Text style={styles.menuText}>{item.title}</Text>
               </View>
-              <Icon name={"chevron-forward"} size={24} color={Colors.primary} />
+
+              <View style={styles.menuItem}>
+                {item.batch && (
+                  <Icon
+                    name={
+                      tripCash?.data?.trip_cash > 0
+                        ? "notifications-circle"
+                        : ""
+                    }
+                    size={24}
+                    color={"red"}
+                  />
+                )}
+                <Icon
+                  name={"chevron-forward"}
+                  size={24}
+                  color={Colors.primary}
+                />
+              </View>
             </View>
           </Link>
         )}
@@ -77,8 +98,8 @@ export default function Menus() {
       />
       <HalfBottomButton
         title={" Log-Out"}
-        width={"45%"}
         handleClick={handleLogout}
+        width={"45%"}
         iconName={"log-out-outline"}
       />
     </View>
@@ -88,7 +109,7 @@ export default function Menus() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.primaryBg,
+    backgroundColor: "white",
   },
   menuMain: {
     display: "flex",

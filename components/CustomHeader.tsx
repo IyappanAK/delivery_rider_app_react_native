@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useRef } from "react";
 
@@ -12,14 +13,20 @@ import BottomSheet from "./BottomSheet";
 import Colors from "../constants/Colors";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Link } from "expo-router";
+import { BottomSheetModal } from "@gorhom/bottom-sheet";
 
 import { getRestaurentDetails } from "@/core/services/home";
-import { BottomSheetModal } from "@gorhom/bottom-sheet";
+import { useNavigation } from "expo-router";
 
 const CustomHeader = () => {
   const bottomSheetRef = useRef<BottomSheetModal>(null);
   const restaurent = getRestaurentDetails({});
+
+  const navigation = useNavigation();
+  function nav(data: any) {
+    navigation.navigate("menus");
+    navigation.canGoBack(true);
+  }
 
   useEffect(() => {
     restaurent.refetch();
@@ -28,47 +35,31 @@ const CustomHeader = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <BottomSheet ref={bottomSheetRef} />
-      <View style={styles.container}>
+      <Pressable style={styles.container} onPress={nav}>
         <View style={styles.secondContainer}>
-          <TouchableOpacity style={{ marginRight: 16 }}>
-            <Link href="/menus" style={{ width: 30, height: 50 }}>
-              <Image
-                style={styles.bike}
-                source={require("@/assets/images/bike.png")}
-              />
-            </Link>
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Link href="/menus">
-              <View style={styles.titleContainer}>
-                <Text style={styles.title}>Delivery · Now</Text>
-                <View style={styles.locationName}>
-                  <Text style={styles.subtitle}>
-                    {restaurent?.data?.address?.area || "Select"}
-                  </Text>
-                  <Ionicons
-                    name="chevron-down"
-                    size={20}
-                    color={Colors.primary}
-                  />
-                </View>
-              </View>
-            </Link>
-          </TouchableOpacity>
+          <Image
+            style={styles.bike}
+            source={require("@/assets/images/bike.png")}
+          />
+
+          <View style={styles.titleContainer}>
+            <Text style={styles.title}>Delivery · Now</Text>
+            <View style={styles.locationName}>
+              <Text style={styles.subtitle}>
+                {restaurent?.data?.address?.area || "Select"}
+              </Text>
+              <Ionicons name="chevron-down" size={20} color={Colors.primary} />
+            </View>
+          </View>
         </View>
-        <Link href={"/menus"} asChild>
-          <TouchableOpacity style={styles.profileButton}>
-            <Ionicons name="person-outline" size={20} color={Colors.primary} />
-          </TouchableOpacity>
-        </Link>
-      </View>
+        <Ionicons name="person-outline" size={20} color={Colors.primary} />
+      </Pressable>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-  safeArea: {
-  },
+  safeArea: {},
   container: {
     height: 60,
     backgroundColor: Colors.lightGrey,
@@ -87,6 +78,7 @@ const styles = StyleSheet.create({
   bike: {
     width: 30,
     height: 30,
+    marginRight: 16,
   },
   titleContainer: {
     flex: 1,

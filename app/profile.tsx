@@ -6,6 +6,7 @@ import Colors from "@/constants/Colors";
 import { getTripCash } from "@/core/services/home";
 import HalfBottomButton from "@/components/Buttons/HalfBottomButton";
 import Loading from "@/components/Pages/Loading";
+import { useFocusEffect } from "expo-router";
 
 export default function Profile() {
   const tripCash = getTripCash({});
@@ -13,6 +14,10 @@ export default function Profile() {
   const handleSave = () => {
     tripCash.refetch();
   };
+
+  useFocusEffect(() => {
+    tripCash.refetch();
+  });
 
   return (
     <View
