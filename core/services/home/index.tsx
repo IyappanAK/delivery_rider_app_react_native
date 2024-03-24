@@ -44,12 +44,12 @@ export const getUserSpecifiedOrders = (options: any, page: any) =>
     meta: { page },
     ...options,
   });
-  export const getTripCash = (options: any) =>
-    useQuery({
-      queryKey: queries.home.tripCash.queryKey,
-      queryFn: API.getTripCash,
-      ...options,
-    });
+export const getTripCash = (options: any) =>
+  useQuery({
+    queryKey: queries.home.tripCash.queryKey,
+    queryFn: API.getTripCash,
+    ...options,
+  });
 
 export const getTopPicks = (options: any) =>
   useQuery({
@@ -79,10 +79,10 @@ export const getPincodes = (options: any) =>
     ...options,
   });
 
-export const getRiderOrders = (options: any, id: any) =>
+export const getRiderOrders = (options: any) =>
   useQuery({
     queryKey: queries.home.riderOrder.queryKey,
-    queryFn: () => API.getRiderOrder(id),
+    queryFn: API.getRiderOrder,
     ...options,
   });
 

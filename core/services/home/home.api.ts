@@ -44,7 +44,7 @@ export const upateFav = (data: any) =>
 
 export const upateOrder = (data: any) =>
   POST({
-    url: ENV.BASE_URL + `/update-order`,
+    url: ENV.BASE_URL + `update-order`,
     data,
   });
 
@@ -109,25 +109,23 @@ export const createAddress = (data: any) =>
 
 export const getOrdersById = (id: any) =>
   GET({
-    url: ENV.BASE_URL + `/orders/${id}`,
+    url: ENV.BASE_URL + `orders/${id}`,
   });
 
 export const getPincode = () =>
   GET({
-    url: ENV.BASE_URL + `/pincodes`,
+    url: ENV.BASE_URL + `pincodes`,
   });
 
-export const getRiderOrder = (id: any) =>
+export const getRiderOrder = () =>
   GET({
-    url: ENV.BASE_URL + `/rider-orders?id=${id}`,
+    url: ENV.BASE_URL + `rider-orders`,
   });
-
 
 export const getTripCash = () =>
   GET({
     url: ENV.BASE_URL + "rider-trip-cash",
   });
-
 
 export const test = () =>
   GET({

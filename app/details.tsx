@@ -5,7 +5,6 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
-  ToastAndroid,
   Linking,
   Alert,
   Platform,
@@ -20,11 +19,11 @@ import useBasketStore from "@/store/basketStore";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { queries } from "@/core/constants/queryKeys";
+import Toast from "react-native-toast-message";
+import { queries } from "@/coreconstants/queryKeys";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import { updateOrder } from "@/core/services/home";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 const Details = () => {
   const route = useRoute();
   const data = route?.params?.data;
@@ -50,29 +49,34 @@ const Details = () => {
           queries.home.tripCash.queryKey,
         ],
       });
-      ToastAndroid.showWithGravity(
-        "Successfully updated",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Successfully updated",
+        position: "bottom",
+        bottomOffset: 110,
+      });
       nav.goBack();
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
   const addToCart = (data: any) => {
     addProduct(data);
-    ToastAndroid.showWithGravity(
-      "Item Added to Cart",
-      ToastAndroid.SHORT,
-      ToastAndroid.CENTER
-    );
+    Toast.show({
+      type: "success",
+      text1: "Success",
+      text2: "Item Added to Cart",
+      position: "bottom",
+      bottomOffset: 110,
+    });
   };
 
   const makePhoneCall = (number: any) => {

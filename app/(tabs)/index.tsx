@@ -1,13 +1,13 @@
 import React, { useEffect } from "react";
 import Colors from "@/constants/Colors";
 
-import { getRiderOrders, getUserInfo, updateUser } from "@/core/services/home";
 import Loading from "@/components/Pages/Loading";
+import { getRiderOrders, getUserInfo, updateUser } from "@/core/services/home";
 
 import { ScrollView, StyleSheet } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
 import useCommonStore from "@/store/commonStore";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import * as Device from "expo-device";
 import { Platform } from "react-native";
@@ -15,12 +15,13 @@ import { Platform } from "react-native";
 import * as Notifications from "expo-notifications";
 import CustomHeader from "@/components/CustomHeader";
 
-import Favourites from "@/components/Pages/Favourites";
 import { useFocusEffect } from "expo-router";
+import Favourites from "@/components/Pages/Favourites";
+
 import { RefreshControl } from "react-native";
 
 const Page = () => {
-  const orders = getRiderOrders({}, 8);
+  const orders = getRiderOrders({});
   const user = getUserInfo({});
 
   const [refreshing, setRefreshing] = React.useState(false);

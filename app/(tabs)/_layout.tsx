@@ -1,13 +1,8 @@
+import React from "react";
 import Colors from "../../constants/Colors";
-import { Tabs, useNavigation } from "expo-router";
+import { Tabs } from "expo-router";
 
-import { Icon } from "@/constants/utils";
 import { Ionicons } from "@expo/vector-icons";
-
-import useBasketStore from "@/store/basketStore";
-import CustomHeader from "@/components/CustomHeader";
-
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 function TabBarIcon(props: {
   name: React.ComponentProps<typeof Ionicons>["name"];
@@ -17,14 +12,12 @@ function TabBarIcon(props: {
 }
 
 export default function TabLayout() {
-  const navigation = useNavigation();
-  const { products } = useBasketStore();
-
   return (
     <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors.primary,
-      }}>
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{

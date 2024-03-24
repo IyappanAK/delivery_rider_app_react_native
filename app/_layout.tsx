@@ -27,6 +27,7 @@ import NoNetwork from "@/components/NoNetwork";
 import NetInfo from "@react-native-community/netinfo";
 
 import { LogBox } from "react-native";
+import Toast from "react-native-toast-message";
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -51,7 +52,7 @@ export default function RootLayout() {
   const { token, setToken, products, setProducts, setTotal } = useBasketStore();
 
   //Disable this While Go For Production
-  // LogBox.ignoreAllLogs();
+  LogBox.ignoreAllLogs();
 
   let result;
   useEffect(() => {
@@ -135,111 +136,141 @@ function RootLayoutNav() {
   const navigation = useNavigation();
 
   return (
-    <QueryClient>
-      <BottomSheetModalProvider>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-          <Stack.Screen
-            name="menus"
-            options={{
-              headerTitle: "Account",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="profile"
-            options={{
-              headerTitle: "Edit Profile",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="orders"
-            options={{
-              headerTitle: "Orders",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="orderDetails"
-            options={{
-              headerTitle: "Order-Details",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-          <Stack.Screen
-            name="details"
-            options={{
-              headerTitle: "Details",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
+    <>
+      <QueryClient>
+        <BottomSheetModalProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+            <Stack.Screen
+              name="menus"
+              options={{
+                headerTitle: "Account",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="profile"
+              options={{
+                headerTitle: "Edit Profile",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="orders"
+              options={{
+                headerTitle: "Orders",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="orderDetails"
+              options={{
+                headerTitle: "Order-Details",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+            <Stack.Screen
+              name="details"
+              options={{
+                headerTitle: "Details",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
 
-          <Stack.Screen
-            name="trackOrder"
-            options={{
-              headerTitle: "Track Order",
-              headerLeft: () => (
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.goBack();
-                  }}
-                >
-                  <Icon name="chevron-back" size={28} color={Colors.primary} />
-                </TouchableOpacity>
-              ),
-            }}
-          />
-        </Stack>
-      </BottomSheetModalProvider>
-    </QueryClient>
+            <Stack.Screen
+              name="trackOrder"
+              options={{
+                headerTitle: "Track Order",
+                headerLeft: () => (
+                  <TouchableOpacity
+                    onPress={() => {
+                      navigation.goBack();
+                    }}
+                  >
+                    <Icon
+                      name="chevron-back"
+                      size={28}
+                      color={Colors.primary}
+                    />
+                  </TouchableOpacity>
+                ),
+              }}
+            />
+          </Stack>
+        </BottomSheetModalProvider>
+      </QueryClient>
+      <Toast />
+    </>
   );
 }
 
 function LoginScreenWithQueryClient() {
   return (
-    <QueryClient>
-      <LoginScreen />
-    </QueryClient>
+    <>
+      <QueryClient>
+        <LoginScreen />
+      </QueryClient>
+      <Toast />
+    </>
   );
 }

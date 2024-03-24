@@ -5,7 +5,6 @@ import {
   StyleSheet,
   ScrollView,
   Pressable,
-  ToastAndroid,
   Alert,
 } from "react-native";
 
@@ -29,6 +28,8 @@ import { queries } from "@/core/constants/queryKeys";
 import Loading from "@/components/Pages/Loading";
 import useCommonStore from "@/store/commonStore";
 
+import Toast from "react-native-toast-message";
+
 export default function AddressForm() {
   const [formData, setFormData] = useState();
 
@@ -43,18 +44,21 @@ export default function AddressForm() {
       queryClient.invalidateQueries({
         queryKey: queries.home.userAddress.queryKey,
       });
-      ToastAndroid.showWithGravity(
-        "Address updated successfully",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Address updated successfully",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
@@ -64,18 +68,22 @@ export default function AddressForm() {
       queryClient.invalidateQueries({
         queryKey: queries.home.userAddress.queryKey,
       });
-      ToastAndroid.showWithGravity(
-        "Address added successfully",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Address added successfully",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
@@ -96,11 +104,12 @@ export default function AddressForm() {
       !formData?.state ||
       !formData?.pincode
     ) {
-      ToastAndroid.showWithGravity(
-        "Please complete all the necessary fields",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "info",
+        text2: "Please complete all the necessary fields",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     } else if (!geoPoint.lat && !geoPoint.lon) {
       Alert.alert(
         "Alert",
@@ -129,11 +138,12 @@ export default function AddressForm() {
       !formData?.state ||
       !formData?.pincode
     ) {
-      ToastAndroid.showWithGravity(
-        "Please complete all the necessary fields",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "info",
+        text2: "Please complete all the necessary fields",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     } else {
       delete formData?.user_id;
       addressMutate.mutate({
@@ -160,7 +170,8 @@ export default function AddressForm() {
           <Text style={styles.currentAddress}>
             {editMode ? "Edit Address" : "Delivery Address"}
           </Text>
-          <Text style={styles.currentAddressText}>k
+          <Text style={styles.currentAddressText}>
+            k
             {user?.data?.Address?.length <= 0 ? (
               editMode ? (
                 "Add Your Address"
@@ -173,11 +184,19 @@ export default function AddressForm() {
                 {formData?.area}, {formData?.landmark}, {formData?.city},
                 {formData?.state}-{formData?.pincode}.
                 <View style={{ margin: 0 }}>
-                  {formData?.alt_number && <Text style={styles.altNumber}>Alternative Number: <Text style={styles.altNumberTwo}>{formData?.alt_number}</Text></Text>}
+                  {formData?.alt_number && (
+                    <Text style={styles.altNumber}>
+                      Alternative Number:{" "}
+                      <Text style={styles.altNumberTwo}>
+                        {formData?.alt_number}
+                      </Text>
+                    </Text>
+                  )}
                 </View>
               </>
             )}
-          </Text>k
+          </Text>
+          k
           {editMode && (
             <View style={styles.formGroup}>
               <View style={styles.formGroup}>
@@ -237,7 +256,9 @@ export default function AddressForm() {
                 />
               </View>
               <View style={styles.formGroup}>
-                <Text style={styles.inputLabel}>Alternative Number (optional) :</Text>
+                <Text style={styles.inputLabel}>
+                  Alternative Number (optional) :
+                </Text>
                 <TextInput
                   style={styles.input}
                   value={formData?.alt_number || ""}
@@ -252,7 +273,8 @@ export default function AddressForm() {
                     flexDirection: "column",
                     justifyContent: "space-between",
                     alignItems: "center",
-                  }}>
+                  }}
+                >
                   <View>
                     <Text style={{ ...styles.inputLabel, ...styles.geo }}>
                       Geolocation
@@ -262,13 +284,15 @@ export default function AddressForm() {
                     style={{
                       flexDirection: "row",
                       marginTop: 12,
-                    }}>
+                    }}
+                  >
                     <Link<{ pathname: any; params: { id: any } }>
                       href={{
                         pathname: "/(modal)/location-search",
                         params: { id: formData?.id || "" },
                       }}
-                      style={styles.selectOnMap}>
+                      style={styles.selectOnMap}
+                    >
                       <View style={{ flexDirection: "row" }}>
                         <Text style={styles.editText}>Select on Map </Text>
                         <Icon
@@ -283,7 +307,6 @@ export default function AddressForm() {
               </View>
             </View>
           )}
-
           {editMode ? (
             <HalfBottomButton
               title={user?.data?.Address?.length <= 0 ? "Submit" : "Update"}
@@ -341,7 +364,6 @@ const styles = StyleSheet.create({
     color: "#000000",
     fontSize: 15,
     fontWeight: "500",
-
   },
   editText: {
     color: "#000",

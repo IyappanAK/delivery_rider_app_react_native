@@ -1,5 +1,6 @@
 import Colors from "@/constants/Colors";
 import React, { useState } from "react";
+
 import * as SecureStore from "expo-secure-store";
 import {
   View,
@@ -7,13 +8,16 @@ import {
   TextInput,
   TouchableOpacity,
   StyleSheet,
-  ToastAndroid,
   ActivityIndicator,
 } from "react-native";
-import useBasketStore from "@/store/basketStore";
+
 import utils from "@/constants/utils";
-import { createUser, otpGenerate, verifyOTP } from "@/core/services/home";
+import useBasketStore from "@/store/basketStore";
+
 import { AkiImage } from "@/constants/Images";
+import Toast from "react-native-toast-message";
+
+import { createUser, otpGenerate, verifyOTP } from "@/core/services/home";
 
 const LoginScreen = () => {
   const [name, setName] = useState("");
@@ -39,8 +43,10 @@ const LoginScreen = () => {
 
   const checkName = !/^[A-Za-z\s]+$/.test(name);
   const checkEmail = !/^\S+@\S+\.\S+$/.test(email);
-  const checkPhoneNumber = !/^\d{10}$/.test(phoneNumber);
+
   const checkOtp = !/^\d+$/.test(otp);
+  const checkPhoneNumber = !/^\d{10}$/.test(phoneNumber);
+
   const checkVerification = !/^\d+$/.test(verificationCode);
 
   const handleSignIn = () => {
@@ -160,18 +166,21 @@ const LoginScreen = () => {
 
   const generateOTP = otpGenerate({
     onSuccess: () => {
-      ToastAndroid.showWithGravity(
-        "OTP has been sent successfully",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "OTP has been sent successfully",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
@@ -183,28 +192,31 @@ const LoginScreen = () => {
           let result = await SecureStore.getItemAsync("token");
           if (result) {
             setToken(result);
-
-            ToastAndroid.showWithGravity(
-              "OTP has been Verified successfully",
-              ToastAndroid.SHORT,
-              ToastAndroid.CENTER
-            );
+            Toast.show({
+              type: "success",
+              text1: "Success",
+              text2: "OTP has been Verified successfully",
+              position: "bottom",
+              bottomOffset: 110,
+            });
           }
         } else setOtpError("Entered OTP is Invalid.");
       } else {
-        ToastAndroid.showWithGravity(
-          "You haven't registered, Please create an account.",
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER
-        );
+        Toast.show({
+          type: "info",
+          text2: "You haven't registered, Please create an account.",
+          position: "bottom",
+          bottomOffset: 110,
+        });
       }
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
@@ -222,29 +234,34 @@ const LoginScreen = () => {
           });
         } else setVerificationCodeError("Entered OTP is Invalid.");
       } else {
-        ToastAndroid.showWithGravity(
-          "You have already created an account, Please proceed to Sign In",
-          ToastAndroid.SHORT,
-          ToastAndroid.CENTER
-        );
+        Toast.show({
+          type: "info",
+          text2:
+            "You have already created an account, Please proceed to Sign In",
+          position: "bottom",
+          bottomOffset: 110,
+        });
       }
     },
     onError: () => {
-      ToastAndroid.showWithGravity(
-        "Something Went Wrong",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "error",
+        text2: "Something Went Wrong",
+        position: "bottom",
+        bottomOffset: 110,
+      });
     },
   });
 
   const user = createUser({
     onSuccess: () => {
-      ToastAndroid.showWithGravity(
-        "Account created successfully",
-        ToastAndroid.SHORT,
-        ToastAndroid.CENTER
-      );
+      Toast.show({
+        type: "success",
+        text1: "Success",
+        text2: "Account created successfully",
+        position: "bottom",
+        bottomOffset: 110,
+      });
       handleBack();
     },
   });
