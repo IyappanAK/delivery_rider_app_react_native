@@ -114,24 +114,18 @@ const MenuCards = (props: any) => {
             <Pressable style={styles.categoryBox} onPress={() => nav(obj)}>
               <Pressable onPress={() => nav(obj)}>
                 <View style={styles.textContainer}>
-                  <Text style={styles.categoryText}>ID:</Text>
-                  <Text style={{ ...styles.price, marginLeft: 6 }}>
-                    #000{obj.id}
-                  </Text>
+                  <Text style={styles.categoryText}>ID :</Text>
+                  <Text style={styles.price}>#000{obj.id}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
-                  <Text style={styles.categoryText}>Items:</Text>
-                  <Text style={{ ...styles.price, marginLeft: 6 }}>
-                    {obj?.Items?.length}
-                  </Text>
+                  <Text style={styles.categoryText}>Items :</Text>
+                  <Text style={styles.price}>{obj?.Items?.length}</Text>
                 </View>
 
                 <View style={styles.textContainer}>
-                  <Text style={styles.categoryText}>Total:</Text>
-                  <Text style={{ ...styles.price, marginLeft: 6 }}>
-                    ₹{obj.bill_total}
-                  </Text>
+                  <Text style={styles.categoryText}>Total :</Text>
+                  <Text style={styles.price}>₹{obj.bill_total}</Text>
                 </View>
               </Pressable>
 
@@ -147,12 +141,12 @@ const MenuCards = (props: any) => {
                 </Text>
               </TouchableOpacity>
             </Pressable>
-            <Pressable style={styles.textContainer} onPress={() => nav(obj)}>
-              <Text style={styles.categoryText}>To:</Text>
-              <Text style={{ ...styles.price, marginLeft: 6 }}>
+            <Pressable style={styles.textContainerCol} onPress={() => nav(obj)}>
+              <Text style={styles.categoryText}>Address :</Text>
+              <Text style={{ ...styles.price, marginTop: 4 }}>
                 {obj?.address.house_no}, {obj?.address.street_address},{" "}
-                {obj?.address.area}, {obj?.address.landmark},{" "}
-                {obj?.address.city},{obj?.address.state}-{obj?.address.pincode}.
+                {obj?.address.area},{obj?.address.landmark}, {obj?.address.city}
+                ,{obj?.address.state}-{obj?.address.pincode}.
               </Text>
             </Pressable>
             <View style={styles.secondCard}>
@@ -206,9 +200,9 @@ const styles = StyleSheet.create({
   },
   categoryText: {
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
   },
-  price: { fontSize: 16, fontWeight: "500" },
+  price: { fontSize: 15, fontWeight: "500", marginLeft: 6 },
   categoryBox: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -227,6 +221,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   textContainer: { flexDirection: "row", marginBottom: 4 },
+  textContainerCol: { flexDirection: "column", marginBottom: 4 },
   btnmain: {
     backgroundColor: Colors.primary,
     borderRadius: 100,
@@ -238,7 +233,7 @@ const styles = StyleSheet.create({
     color: "red",
     fontWeight: "800",
     textAlign: "center",
-    borderRadius: 20,
+    borderRadius: 16,
     borderWidth: 1,
   },
 });

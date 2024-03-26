@@ -103,16 +103,16 @@ export default function OrderHistory() {
                             <Text
                               style={{
                                 fontSize: 14,
-                                fontWeight: "800",
+                                fontWeight: "700",
                                 color: "#666",
                               }}
                             >
-                              Order ID #000{item?.id}
+                              Order ID - #000{item?.id}
                             </Text>
                             <Text
                               style={{
                                 fontSize: 14,
-                                fontWeight: "800",
+                                fontWeight: "700",
                                 color: "#666",
                               }}
                             >
@@ -157,7 +157,15 @@ export default function OrderHistory() {
                                 }}
                                 style={styles.link}
                               >
-                                <Text style={styles.buttonText}>
+                                <Text
+                                  style={{
+                                    ...styles.buttonText,
+                                    color:
+                                      item.payment_type == "cod"
+                                        ? "red"
+                                        : "#60B246",
+                                  }}
+                                >
                                   {item?.payment_type &&
                                     item?.payment_type.toUpperCase()}
                                 </Text>
@@ -177,7 +185,6 @@ export default function OrderHistory() {
                     {
                       backgroundColor:
                         currentPage === 1 ? "#B3B3B3" : "#007BFF",
-                      marginRight: 16,
                     },
                   ]}
                   onPress={handlePrevPage}
@@ -185,7 +192,7 @@ export default function OrderHistory() {
                 >
                   <Text style={styles.paginationButtonText}>Prev</Text>
                 </Pressable>
-
+                <Text style={styles.currentPageText}>{currentPage}</Text>
                 <Pressable
                   style={() => [
                     styles.paginationButton,
@@ -275,7 +282,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   subtitle: {
     marginTop: 10,
@@ -307,7 +314,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignItems: "center",
     fontSize: 15,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   price: { fontSize: 14, fontWeight: "600", paddingBottom: 10 },
   tag: {
@@ -361,6 +368,12 @@ const styles = StyleSheet.create({
   paginationButtonText: {
     color: "white",
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
+  },
+  currentPageText: {
+    color: "black",
+    fontSize: 16,
+    fontWeight: "700",
+    marginHorizontal: 8,
   },
 });

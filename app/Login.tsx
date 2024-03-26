@@ -348,7 +348,7 @@ const LoginScreen = () => {
               </TouchableOpacity>
               <Text style={styles.createAccountText} onPress={handleBack}>
                 Already have an account?{" "}
-                <Text style={{ fontWeight: "800" }}>Sign In</Text>
+                <Text style={{ fontWeight: "700" }}>Sign In</Text>
               </Text>
             </View>
           ) : (
@@ -367,7 +367,7 @@ const LoginScreen = () => {
               </TouchableOpacity>
               <Text style={styles.createAccountText} onPress={handleBack}>
                 Already have an account ?
-                <Text style={{ fontWeight: "800" }}> Sign In</Text>
+                <Text style={{ fontWeight: "700" }}> Sign In</Text>
               </Text>
             </>
           )}
@@ -490,7 +490,7 @@ const styles = StyleSheet.create({
   },
   signInText: {
     fontSize: 18,
-    fontWeight: "800",
+    fontWeight: "700",
     color: "white",
   },
   createAccountText: {

@@ -194,9 +194,9 @@ const Drawer = ({ item }) => {
         <View style={styles.headingContainer}>
           <Text style={styles.section}>Order Items</Text>
           <AntDesign
-            name={isContentVisible ? "up" : "down"}
-            size={24}
-            color="#9f9aa1"
+            name={isContentVisible ? "close" : "infocirlceo"}
+            size={20}
+            color="black"
           />
         </View>
       </TouchableOpacity>
@@ -204,7 +204,13 @@ const Drawer = ({ item }) => {
         <ScrollView showsVerticalScrollIndicator={false}>
           <FlatList
             data={item?.Items}
-            // ListHeaderComponent={<Text style={styles.section}>Items</Text>}
+            style={{
+              marginTop: 6,
+              borderColor: "#cfcfcf",
+              borderWidth: 1,
+              borderRadius: 8,
+              padding: 4,
+            }}
             ItemSeparatorComponent={() => (
               <View style={{ height: 1, backgroundColor: Colors.grey }} />
             )}
@@ -276,8 +282,8 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.8,
   },
   currentAddress: {
-    fontSize: 19,
-    fontWeight: "800",
+    fontSize: 18,
+    fontWeight: "700",
     marginBottom: 5,
   },
   currentAddressText: {
@@ -286,11 +292,11 @@ const styles = StyleSheet.create({
   },
   orderStatus: {
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   orderStatusSubText: {
     fontSize: 16,
-    fontWeight: "800",
+    fontWeight: "700",
   },
   orderStatusContainer: {
     paddingVertical: 20,
@@ -319,7 +325,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   section: {
-    fontSize: 20,
+    fontSize: 17,
     fontWeight: "bold",
   },
   totalRow: {
@@ -345,7 +351,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   orderSubtext: {
-    fontSize: 16,
+    fontSize: 15,
     fontWeight: "600",
   },
   headingContainer: {
@@ -353,7 +359,6 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     paddingVertical: 16,
-    borderBottomWidth: 1,
     borderBottomColor: "lightgray",
   },
   headingText: {

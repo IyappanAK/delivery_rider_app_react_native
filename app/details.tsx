@@ -20,10 +20,11 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { useQueryClient } from "@tanstack/react-query";
 
 import Toast from "react-native-toast-message";
-import { queries } from "@/coreconstants/queryKeys";
+import { queries } from "@/core/constants/queryKeys";
 
 import { updateOrder } from "@/core/services/home";
 import { SafeAreaView } from "react-native-safe-area-context";
+
 const Details = () => {
   const route = useRoute();
   const data = route?.params?.data;
@@ -327,7 +328,7 @@ const Drawer = (props: any) => {
         <View style={styles.headingContainer}>
           <Text style={styles.section}>More</Text>
           <AntDesign
-            name={isContentVisible ? "up" : "down"}
+            name={isContentVisible ? "close" : "down"}
             size={18}
             color="#9f9aa1"
           />
@@ -415,7 +416,7 @@ const styles = StyleSheet.create({
   },
   totalText: {
     fontSize: 18,
-    fontWeight: "600",
+    fontWeight: "700",
     color: "white",
     backgroundColor: "#60B246",
     paddingHorizontal: 20,

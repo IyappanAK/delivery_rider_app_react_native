@@ -22,9 +22,7 @@ const NoNetwork = (props: any) => {
       <View style={styles.container}>
         <Image
           style={styles.emptyIllustration}
-          source={{
-            uri: "https://cdni.iconscout.com/illustration/premium/thumb/no-connection-2130358-1800922.png?f=webp",
-          }}
+          source={require("@/assets/images/no-network.webp")}
           resizeMode="contain"
         />
         <Text
@@ -33,8 +31,9 @@ const NoNetwork = (props: any) => {
             fontWeight: "700",
             textAlign: "center",
             marginVertical: 10,
-          }}>
-          No Internet Connection !
+          }}
+        >
+          No Internet Connection!
         </Text>
         <View style={{ width: "90%" }}>
           <TouchableOpacity style={styles.logoutButton} onPress={handleClick}>
