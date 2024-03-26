@@ -1,10 +1,9 @@
 import React from "react";
 import Colors from "@/constants/Colors";
 
-import { Icon } from "@/constants/utils";
 import { SafeAreaView } from "react-native";
-
 import { View, Text, StyleSheet, Image } from "react-native";
+
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const NoNetwork = (props: any) => {

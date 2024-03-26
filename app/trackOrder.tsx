@@ -163,7 +163,7 @@ const OrderTrackingScreen = () => {
               <Text style={styles.orderStatus}>Cancelled Reason:</Text>
               <Text style={styles.orderSubtext}>{!item?.reason && `-`}</Text>
             </View>
-            <Text style={styles.orderSubtext}>
+            <Text style={{ ...styles.orderSubtext, color: "red" }}>
               {item?.reason && `# ${item?.reason}`}
             </Text>
           </>

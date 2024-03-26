@@ -22,7 +22,7 @@ import { useQueryClient } from "@tanstack/react-query";
 import Toast from "react-native-toast-message";
 import { queries } from "@/core/constants/queryKeys";
 
-import { updateOrder } from "@/core/services/home";
+import { putNotification, updateOrder } from "@/core/services/home";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 const Details = () => {
@@ -41,15 +41,33 @@ const Details = () => {
   const { addProduct } = useBasketStore();
 
   const nav = useNavigation();
+  const notification = putNotification({});
 
   const updateOrders = updateOrder({
-    onSuccess: () => {
+    onSuccess: (data: any) => {
       queryClient.invalidateQueries({
         queryKey: [
           queries.home.riderOrder.queryKey,
           queries.home.tripCash.queryKey,
         ],
       });
+
+      const cancelNotification: any = {
+        sound: "default",
+        title: `Order #000${data.id} Was Cancelled 💔`,
+        body: `Reason: ${data.reason} 🔺`,
+        to: data?.user?.pushToken,
+      };
+
+      const successNotification = {
+        sound: "default",
+        title: `Hey ${data?.user?.name} 👋`,
+        body: `Order #000${data.id} was successfully delivered ❤️ 🥰`,
+        to: data?.user?.pushToken,
+      };
+
+      notification.mutate(cancel ? cancelNotification : successNotification);
+
       Toast.show({
         type: "success",
         text1: "Success",
@@ -118,7 +136,9 @@ const Details = () => {
   const completeOrder = (payload: any, cancel: boolean) => {
     Alert.alert(
       "Alert",
-      `Are you sure you want to ${cancel ? "cancel" : "complete"} Order`,
+      `Are you sure you want to ${
+        cancel ? "cancel order ❌" : "complete order ✅"
+      }`,
       [
         { text: "NO", style: "cancel" },
         { text: "Yes", onPress: () => updateOrders.mutate(payload) },

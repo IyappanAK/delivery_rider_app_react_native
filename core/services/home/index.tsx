@@ -89,6 +89,9 @@ export const getRiderOrders = (options: any) =>
 export const updateOrder = (options: any) =>
   useMutation({ mutationFn: API.upateOrder, ...options });
 
+export const putNotification = (options: any) =>
+  useMutation({ mutationFn: API.sentNotification, ...options });
+
 export const updateFavMenus = (options: any) =>
   useMutation({ mutationFn: API.upateFav, ...options });
 

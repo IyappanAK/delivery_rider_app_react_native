@@ -48,6 +48,12 @@ export const upateOrder = (data: any) =>
     data,
   });
 
+export const sentNotification = (data: any) =>
+  POST({
+    url: ENV.BASE_URL + `send-push-notification`,
+    data,
+  });
+
 export const postOrders = (data: any) =>
   POST({
     url: ENV.BASE_URL + `orders`,
