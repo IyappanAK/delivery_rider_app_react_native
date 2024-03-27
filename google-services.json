@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "656814545930",
+    "project_id": "push-notification-ece10",
+    "storage_bucket": "push-notification-ece10.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656814545930:android:a28a425b0b47012d5c53f3",
+        "android_client_info": {
+          "package_name": "com.aki_7.deliverypartnerapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjS58j1c8-X7GTiFATf0f0bgt-esacS5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:656814545930:android:30705a76a5abba625c53f3",
+        "android_client_info": {
+          "package_name": "com.aki_7.nottest"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjS58j1c8-X7GTiFATf0f0bgt-esacS5s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

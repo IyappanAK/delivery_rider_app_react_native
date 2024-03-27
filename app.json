@@ -2,7 +2,7 @@
   "expo": {
     "name": "Elite Rider App",
     "slug": "deliverypartnerapp",
-    "version": "1.0.0",
+    "version": "1.0.3",
     "orientation": "portrait",
     "icon": "./assets/images/icon1.png",
     "scheme": "myapp",
@@ -11,10 +11,6 @@
       "image": "./assets/images/splash1.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
-    },
-    "notification": {
-      "icon": "./assets/images/adaptive-icon1.png",
-      "color": "#ffffff"
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
@@ -28,6 +24,7 @@
         "foregroundImage": "./assets/images/adaptive-icon1.png",
         "backgroundColor": "#ffffff"
       },
+      "googleServicesFile": "./google-services.json",
       "package": "com.aki_7.deliverypartnerapp"
     },
     "web": {
@@ -35,19 +32,28 @@
       "output": "static",
       "favicon": "./assets/images/favicon.png"
     },
-    "plugins": ["expo-router"],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/images/icon1.png",
+          "color": "#ffffff"
+        }
+      ]
+    ],
     "experiments": {
       "typedRoutes": true,
       "tsconfigPaths": true
     },
-    "owner": "aki_7",
     "extra": {
       "router": {
         "origin": false
       },
       "eas": {
         "projectId": "5a60a5bf-cc35-43b7-8735-ebf36dbb499f"
-      }
+      },
+      "owner": "aki_7"
     }
   }
 }

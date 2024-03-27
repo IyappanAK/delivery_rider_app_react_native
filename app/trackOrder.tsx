@@ -170,19 +170,19 @@ const OrderTrackingScreen = () => {
         )}
       </View>
       <Drawer item={item} />
-      <View style={{ marginVertical: 20 }}>
+      {/* <View style={{ marginVertical: 20 }}>
         <HalfBottomButton
           title={item?.orderStatus == "picked" ? "Contact Rider" : "Contact"}
           handleClick={makePhoneCall}
           width={"45%"}
         />
-      </View>
+      </View> */}
     </ScrollView>
   );
 };
 
 const Drawer = ({ item }) => {
-  const [isContentVisible, setContentVisible] = useState(false);
+  const [isContentVisible, setContentVisible] = useState(true);
 
   const toggleContent = () => {
     setContentVisible(!isContentVisible);

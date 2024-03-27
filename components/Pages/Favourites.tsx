@@ -154,8 +154,8 @@ const MenuCards = (props: any) => {
                 <TouchableOpacity
                   onPress={() =>
                     openDirectionsInGoogleMaps(
-                      obj?.address?.lat,
-                      obj?.address?.lon
+                      obj?.user.Address?.[0]?.lat,
+                      obj?.user.Address?.[0]?.lon
                     )
                   }
                   style={styles.btnmain}
